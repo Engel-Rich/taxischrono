@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "388406613111-4ama9814rmq80k2ikfg1is3dl8pqd4sa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.incc.taxischrono.app",
+            "certificate_hash": "49e2f21cf070a1eab8fcf866a4978273a2a2ab27"
+          }
+        },
+        {
           "client_id": "388406613111-uj399lmf6itidrebtv6krolrcip6aaev.apps.googleusercontent.com",
           "client_type": 3
         }
