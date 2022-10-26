@@ -104,10 +104,4 @@ class Authservices extends ChangeNotifier {
       debugPrint(e.code);
     }
   }
-
-  setnumber(String smsCode, String verificationId) async {
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId, smsCode: smsCode);
-    await authentication.currentUser!.updatePhoneNumber(credential);
-  }
 }

@@ -9,4 +9,3 @@ final datatbase = FirebaseDatabase.instance;
 final firestore = FirebaseFirestore.instance;
 // les variables pour l'OTP
 var smsCode = "";
-var resend = false;

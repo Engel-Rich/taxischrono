@@ -84,7 +84,7 @@ class ApplicationUser {
           debugPrint(error);
         },
         codeSent: (String verificationId, int? resentokent) async {
-          // notons que la variable smsCode sera modifier par lor de la connexion à
+          // notons que la variable smsCode sera modifier par lors de la connexion à
           //l'interface utilisateur
 
           PhoneAuthCredential credential = PhoneAuthProvider.credential(
