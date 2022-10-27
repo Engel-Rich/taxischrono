@@ -1,5 +1,7 @@
-// import 'package:taxischrono/modeles/applicationuser/appliactionuser.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taxischrono/modeles/autres/codepromo.dart';
+import 'package:taxischrono/modeles/autres/forfetclient.dart';
+import 'package:taxischrono/modeles/autres/package.dart';
+import 'package:taxischrono/modeles/autres/reservation.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
 class Client {
@@ -7,70 +9,50 @@ class Client {
 
   Client({
     required this.idUser,
-    // required super.userAdresse,
-    // required super.userEmail,
-    // required super.userName,
-    // required super.userTelephone,
-    // required super.userCni,
-    // super.userDescription,
-    // super.motDePasse,
-    // super.userid,
-    // super.userProfile,
   });
   clientCollection() => firestore.collection("Clients").doc(idUser);
   Map<String, dynamic> toMap() => {
         'idUser': idUser,
       };
 
+// register login and vérification
   saveClient() {
     clientCollection().set(toMap());
   }
 
-  // soucrireAunPackage(ForfetsActifs forfetsActifs) async {
-  //   forfetsActifsList.add(forfetsActifs.idForfait);
-  //   await firestore.collection("Clients").doc(idUser).update(toMap());
-  // }
-}
+  // souscrire à un code package et utiliser un code promo
+  soucrireAunPackage(Packages packages, CodePromo? codePromo) {
+    if (codePromo != null) {
+      packages.prixPackage =
+          packages.prixPackage * codePromo.pourcentageDeReduction;
+    }
 
-class ForfetsActifs {
-  final String idForfait;
-  final int idPackage;
-  DateTime activationDate;
-  int nombreDeTicketsUtilise;
-  int nombreDeTicketRestant;
-  final String idUser;
-  ForfetsActifs({
-    required this.idUser,
-    required this.activationDate,
-    required this.idForfait,
-    required this.nombreDeTicketRestant,
-    required this.nombreDeTicketsUtilise,
-    required this.idPackage,
-  });
+    // TODO implementation du payement;
 
-  Map<String, dynamic> toMap() => {
-        "idForfait": idForfait,
-        "idPackage": idPackage,
-        "activationDate": Timestamp.fromDate(activationDate),
-        "nombreDeTicketsUtilise": nombreDeTicketsUtilise,
-        "nombreDeTicketRestant": nombreDeTicketRestant,
-      };
-  forfetCollection() => firestore
-      .collection('Client')
-      .doc(idUser)
-      .collection("ForfetsActifs")
-      .doc(idForfait);
-  activerForfait() async {
-    await forfetCollection().set(toMap());
+    ForfetClients forfetsActifs = ForfetClients(
+      idUser: idUser,
+      activationDate: DateTime.now(),
+      idForfait: DateTime.now().microsecondsSinceEpoch.toString(),
+      nombreDeTicketRestant: packages.nombreDeTickets,
+      nombreDeTicketsUtilise: 0,
+      idPackage: packages.idPackage,
+    );
+    forfetsActifs.activerForfait();
   }
 
-  utiliserUnTicket() async {
-    nombreDeTicketsUtilise++;
-    nombreDeTicketRestant -= 1;
-    if (nombreDeTicketRestant > 0) {
-      await forfetCollection().update(toMap());
-    } else {
-      await forfetCollection().delete();
-    }
+  //faire une reservations
+  faireUneReservation(
+      Map depart, Map arrive, Map position, double prix, String type) {
+    Reservation reservation = Reservation(
+      idReservation: DateTime.now().millisecondsSinceEpoch.toString(),
+      idClient: idUser,
+      pointDepart: depart,
+      positionClient: position,
+      pointArrive: arrive,
+      prixReservation: prix,
+      dateReserVation: DateTime.now(),
+      typeReservation: type,
+    );
+    reservation.valideRservation();
   }
 }

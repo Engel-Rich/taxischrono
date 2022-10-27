@@ -1,10 +1,10 @@
 class Packages {
   final int idPackage;
-  final double montant;
+  double prixPackage;
   final int nombreDeTickets;
 
   Packages({
-    required this.montant,
+    required this.prixPackage,
     required this.idPackage,
     required this.nombreDeTickets,
   });

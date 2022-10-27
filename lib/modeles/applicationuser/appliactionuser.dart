@@ -13,6 +13,7 @@ class ApplicationUser {
   final String userAdresse;
   final String? userDescription;
   final String userCni;
+  final DateTime expireCniDate;
 
   ApplicationUser({
     required this.userAdresse,
@@ -24,19 +25,20 @@ class ApplicationUser {
     this.userDescription,
     this.userid,
     this.userProfile,
+    required this.expireCniDate,
   });
 
   factory ApplicationUser.fromJson(Map<String, dynamic> mapUser) =>
       ApplicationUser(
-        userAdresse: mapUser['userAdresse'],
-        userEmail: mapUser['userEmail'],
-        userName: mapUser['userName'],
-        userTelephone: mapUser['userTelephone'],
-        userCni: mapUser['userCni'],
-        userDescription: mapUser['userDescription'],
-        userid: mapUser['userid'],
-        userProfile: mapUser['userProfile'],
-      );
+          userAdresse: mapUser['userAdresse'],
+          userEmail: mapUser['userEmail'],
+          userName: mapUser['userName'],
+          userTelephone: mapUser['userTelephone'],
+          userCni: mapUser['userCni'],
+          userDescription: mapUser['userDescription'],
+          userid: mapUser['userid'],
+          userProfile: mapUser['userProfile'],
+          expireCniDate: mapUser['expireCniDate']);
 
   Map<String, dynamic> toJson() => {
         'userAdresse': userAdresse,
@@ -47,6 +49,7 @@ class ApplicationUser {
         'userDescription': userDescription,
         'userid': userid,
         'userProfile': userProfile,
+        'ExpireCniDate': expireCniDate,
       };
 
   saveUser() async {
