@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.incc.taxischrono">
+    package="com.incc.taxischrono.app">
    <application
         android:label="taxischrono"
         android:name="${applicationName}"

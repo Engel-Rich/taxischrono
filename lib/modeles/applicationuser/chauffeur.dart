@@ -1,7 +1,7 @@
 import 'package:taxischrono/modeles/applicationuser/appliactionuser.dart';
 import 'package:taxischrono/modeles/autres/reservation.dart';
 import 'package:taxischrono/modeles/autres/transaction.dart';
-import 'package:taxischrono/varibles/variables.dart';
+// import 'package:taxischrono/varibles/variables.dart';
 
 class Chauffeur extends ApplicationUser {
   final String numeroPermi;
