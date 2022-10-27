@@ -53,17 +53,19 @@ class Transaction {
         idTansaction: transaction['idTansaction'],
         idclient: transaction['idclient'],
         idChauffer: transaction['idChauffer'],
-        dateAcceptation: transaction['dateAcceptation'],
+        dateAcceptation:
+            (transaction['dateAcceptation'] as fst.Timestamp).toDate(),
         idReservation: transaction['idReservation'],
-        tempsDepart: transaction['tempsDepart'],
-        tempsArrive: transaction['tempsArrive'],
+        tempsDepart: (transaction['tempsDepart'] as fst.Timestamp).toDate(),
+        tempsArrive: (transaction['tempsArrive'] as fst.Timestamp).toDate(),
         noteChauffeur: transaction['noteChauffeur'],
         commentaireChauffeurSurLeClient:
             transaction["commentaireChauffeurSurLeClient"],
         commentaireClientSurLeChauffeur:
             transaction['commentaireClientSurLeChauffeur'],
-        etatTransaction: transaction['etatTransaction'],
-        tempsAnnulation: transaction['tempsAnnulation'],
+        etatTransaction: (transaction['etatTransaction']),
+        tempsAnnulation:
+            (transaction['tempsAnnulation'] as fst.Timestamp).toDate(),
       );
 
   // Validation de la transaction

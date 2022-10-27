@@ -41,7 +41,7 @@ class Reservation {
         "positionClient": jsonEncode(positionClient),
         "prixReservation": prixReservation,
         "typeRservation": typeReservation,
-        "dateReservation": dateReserVation,
+        "dateReservation": fst.Timestamp.fromDate(dateReserVation),
         "etatReservation": etatReservation,
         "idClient": idClient
       };
@@ -52,7 +52,8 @@ class Reservation {
       positionClient: jsonDecode(reservation["positionClient"]),
       pointArrive: jsonDecode(reservation["pointArrive"]),
       prixReservation: reservation["prixReservation"],
-      dateReserVation: reservation["dateReservation"],
+      dateReserVation:
+          (reservation["dateReservation"] as fst.Timestamp).toDate(),
       typeReservation: reservation["typeRservation"],
       idClient: reservation['idClient'],
       etatReservation: reservation['etatReservation']);
