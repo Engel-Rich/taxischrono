@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taxischrono/modeles/discutions/conversation.dart';
+import 'package:taxischrono/modeles/discutions/message.dart';
 import 'package:taxischrono/services/firebaseauthservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -61,10 +63,21 @@ class ApplicationUser {
     }
   }
 
+  static Stream<ApplicationUser> appUserInfos(idClient) => firestore
+      .collection('Utilisateur')
+      .doc(idClient)
+      .snapshots()
+      .map((user) => ApplicationUser.fromJson(user.data()!));
+
   login() {
     if (authentication.currentUser == null) {
       Authservices().login(userEmail, motDePasse);
     }
+  }
+
+  envoyerUnMessage(Message message) async {
+    Conversation conversation = Conversation(lastMessage: message);
+    await conversation.sendMessage();
   }
 
   register() async {
