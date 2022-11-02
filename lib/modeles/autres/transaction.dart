@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as fst;
 import 'package:taxischrono/varibles/variables.dart';
 
-class Transaction {
+class TransactionApp {
   final String idTansaction;
   final String idclient;
   final String idChauffer;
@@ -15,7 +15,7 @@ class Transaction {
   String? commentaireChauffeurSurLeClient;
   int? noteChauffeur;
 
-  Transaction({
+  TransactionApp({
     required this.idTansaction,
     required this.idclient,
     required this.idChauffer,
@@ -32,7 +32,7 @@ class Transaction {
 
 // Collection variable
   fst.DocumentReference collection() =>
-      firestore.collection("Transaction").doc(idTansaction);
+      firestore.collection("TransactionApp").doc(idTansaction);
 
   // Json
   Map<String, dynamic> tomap() => {
@@ -49,7 +49,8 @@ class Transaction {
         "etatTransaction": etatTransaction,
         "tempsAnnulation": tempsAnnulation,
       };
-  factory Transaction.fromJson(Map<String, dynamic> transaction) => Transaction(
+  factory TransactionApp.fromJson(Map<String, dynamic> transaction) =>
+      TransactionApp(
         idTansaction: transaction['idTansaction'],
         idclient: transaction['idclient'],
         idChauffer: transaction['idChauffer'],

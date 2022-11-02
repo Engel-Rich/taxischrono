@@ -1,4 +1,5 @@
 // import 'package:taxischrono/modeles/applicationuser/chauffeur.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taxischrono/modeles/applicationuser/appliactionuser.dart';
 import 'package:taxischrono/modeles/applicationuser/chauffeur.dart';
 import 'package:taxischrono/modeles/autres/codepromo.dart';
@@ -6,6 +7,7 @@ import 'package:taxischrono/modeles/autres/forfetclient.dart';
 import 'package:taxischrono/modeles/autres/package.dart';
 import 'package:taxischrono/modeles/autres/reservation.dart';
 import 'package:taxischrono/modeles/autres/transaction.dart';
+// import 'package:taxischrono/modeles/autres/transaction.dart';
 // import 'package:taxischrono/modeles/discutions/conversation.dart';
 // import 'package:taxischrono/modeles/discutions/conversation.dart';
 import 'package:taxischrono/modeles/discutions/message.dart';
@@ -28,7 +30,8 @@ class Client extends ApplicationUser {
   });
 
   // collection variable
-  clientCollection() => firestore.collection("Clients").doc(userid);
+  DocumentReference clientCollection() =>
+      firestore.collection("Clients").doc(userid);
 
   // serialisation
   Map<String, dynamic> toMap() => {
@@ -41,6 +44,9 @@ class Client extends ApplicationUser {
         userTelephone: client['userTelephone'],
         userCni: client['userCni'],
         expireCniDate: client['expireCniDate'],
+        userDescription: client['userDescription'],
+        userProfile: client['userProfile'],
+        userid: client['userid'],
       );
 // register login and vérification
   @override
@@ -89,8 +95,10 @@ class Client extends ApplicationUser {
     await reservation.valideRservation();
   }
 
-  annulerUneRservation(Reservation reservation) async {
-    await reservation.annuletReservation();
+  commenterLaCourse(
+      {required TransactionApp transaction,
+      required String commentaire}) async {
+    transaction.commenterSurLaconduiteDuChauffeur(commentaire);
   }
 
   chaterAvecLeChauffeur(
@@ -104,56 +112,5 @@ class Client extends ApplicationUser {
       isRead: false,
     );
     envoyerUnMessage(message);
-  }
-
-  singalerUrgence({required String message}) {
-    final Message msg = Message(
-      senderUserId: userid!,
-      destinationUserId: idServiceClient,
-      libelle: message,
-      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
-      type: 'urgence',
-      isRead: false,
-    );
-    Message reponse = Message(
-      senderUserId: idServiceClient,
-      destinationUserId: userid!,
-      libelle:
-          "Merci de bien vouloir nous signaler votre urgence S'il-vous-plait",
-      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
-      type: 'reponse',
-      isRead: false,
-    );
-    envoyerUnMessage(msg);
-    envoyerUnMessage(reponse);
-  }
-
-  contacterLeServiceClient({required String message}) {
-    final Message msg = Message(
-      senderUserId: userid!,
-      destinationUserId: idServiceClient,
-      libelle: message,
-      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
-      type: 'contacter',
-      isRead: false,
-    );
-    envoyerUnMessage(msg);
-  }
-
-  signalerDepart({required Transaction transaction}) {
-    transaction.modifierEtat(2);
-  }
-
-  signalerArriver({required Transaction transaction}) {
-    transaction.modifierEtat(1);
-  }
-
-  noterLechauffeur({required Transaction transaction, required int note}) {
-    transaction.noterChauffeur(note);
-  }
-
-  commenterLaCourse(
-      {required Transaction transaction, required String commentaire}) async {
-    transaction.commenterSurLaconduiteDuChauffeur(commentaire);
   }
 }

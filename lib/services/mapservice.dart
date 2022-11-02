@@ -1,1 +1,3 @@
-class GooGleMapServices {}
+class GooGleMapServices {
+  static requestLocation() async {}
+}

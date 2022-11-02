@@ -70,9 +70,9 @@ class Reservation {
   annuletReservation() async {
     updateAcceptedState(-1);
     // final transactions =
-    await firestore.collection("Transaction").get().then((value) {
+    await firestore.collection("TransactionApp").get().then((value) {
       value.docs.map((tansaction) async {
-        final transaction = Transaction.fromJson(tansaction.data());
+        final transaction = TransactionApp.fromJson(tansaction.data());
         if (transaction.idReservation == idReservation) {
           await transaction.modifierEtat(-1);
         }

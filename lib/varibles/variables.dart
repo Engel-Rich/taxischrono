@@ -25,8 +25,12 @@ const etatTransaction = {
   2: "en cours"
 };
 
+const mapApiKey = "";
+const mapKey = "AIzaSyDRo0HCox0WQXqoXF8ToJbB9KgBFytNBHo";
 const String idServiceClient = "taxisChronoInccCenter";
 
 // les fonctions
 
 Size taille(BuildContext context) => MediaQuery.of(context).size;
+
+// adresse de la console google : https://console.cloud.google.com
