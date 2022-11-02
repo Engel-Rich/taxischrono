@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taxischrono/modeles/autres/reservation.dart';
+import 'package:taxischrono/modeles/autres/transaction.dart';
+import 'package:taxischrono/modeles/discutions/conversation.dart';
+import 'package:taxischrono/modeles/discutions/message.dart';
 import 'package:taxischrono/services/firebaseauthservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -61,10 +65,71 @@ class ApplicationUser {
     }
   }
 
+  static Stream<ApplicationUser> appUserInfos(idClient) => firestore
+      .collection('Utilisateur')
+      .doc(idClient)
+      .snapshots()
+      .map((user) => ApplicationUser.fromJson(user.data()!));
+
   login() {
     if (authentication.currentUser == null) {
       Authservices().login(userEmail, motDePasse);
     }
+  }
+
+  envoyerUnMessage(Message message) async {
+    Conversation conversation = Conversation(lastMessage: message);
+    await conversation.sendMessage();
+  }
+
+  singalerUrgence({required String message}) {
+    final Message msg = Message(
+      senderUserId: userid!,
+      destinationUserId: idServiceClient,
+      libelle: message,
+      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
+      type: 'urgence',
+      isRead: false,
+    );
+    Message reponse = Message(
+      senderUserId: idServiceClient,
+      destinationUserId: userid!,
+      libelle:
+          "Merci de bien vouloir nous signaler votre urgence S'il-vous-plait",
+      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
+      type: 'reponse',
+      isRead: false,
+    );
+    envoyerUnMessage(msg);
+    envoyerUnMessage(reponse);
+  }
+
+  contacterLeServiceClient({required String message}) {
+    final Message msg = Message(
+      senderUserId: userid!,
+      destinationUserId: idServiceClient,
+      libelle: message,
+      messageId: DateTime.now().millisecondsSinceEpoch.toString(),
+      type: 'contacter',
+      isRead: false,
+    );
+    envoyerUnMessage(msg);
+  }
+
+  signalerDepart({required TransactionApp transaction}) {
+    transaction.modifierEtat(2);
+  }
+
+  signalerArriver({required TransactionApp transaction}) {
+    transaction.modifierEtat(1);
+  }
+
+  annulerUneRservation(Reservation reservation) async {
+    await reservation.annuletReservation();
+  }
+
+  noterLechauffeur({required TransactionApp transaction, required int note}) {
+    transaction.noterChauffeur(note);
   }
 
   register() async {

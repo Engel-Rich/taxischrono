@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as fst;
+import 'package:taxischrono/modeles/autres/transaction.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
 class Reservation {
@@ -10,7 +12,7 @@ class Reservation {
   Map pointArrive;
   Map positionClient;
   double prixReservation;
-  bool accepted;
+  int etatReservation;
   DateTime dateReserVation;
   String typeReservation;
 
@@ -23,9 +25,15 @@ class Reservation {
     required this.prixReservation,
     required this.dateReserVation,
     required this.typeReservation,
-    this.accepted = false,
+    this.etatReservation = 0,
   });
 
+// Collection
+
+  fst.DocumentReference collection() =>
+      firestore.collection("Reservation").doc(idReservation);
+
+// Json
   Map<String, dynamic> tomap() => {
         'idReservation': idReservation,
         "pointDepart": jsonEncode(pointDepart),
@@ -33,31 +41,42 @@ class Reservation {
         "positionClient": jsonEncode(positionClient),
         "prixReservation": prixReservation,
         "typeRservation": typeReservation,
-        "dateReservation": dateReserVation,
-        "accepted": accepted,
+        "dateReservation": fst.Timestamp.fromDate(dateReserVation),
+        "etatReservation": etatReservation,
         "idClient": idClient
       };
 
   factory Reservation.fromJson(Map<String, dynamic> reservation) => Reservation(
       idReservation: reservation["idReservation"],
-      pointDepart: reservation["pointDepart"],
-      positionClient: reservation["positionClient"],
-      pointArrive: reservation["pointArrive"],
+      pointDepart: jsonDecode(reservation["pointDepart"]),
+      positionClient: jsonDecode(reservation["positionClient"]),
+      pointArrive: jsonDecode(reservation["pointArrive"]),
       prixReservation: reservation["prixReservation"],
-      dateReserVation: reservation["dateReservation"],
+      dateReserVation:
+          (reservation["dateReservation"] as fst.Timestamp).toDate(),
       typeReservation: reservation["typeRservation"],
       idClient: reservation['idClient'],
-      accepted: reservation['accepted']);
+      etatReservation: reservation['etatReservation']);
 
   // validation de la réservation
   valideRservation() async {
-    firestore.collection("Reservation").doc(idReservation).set(tomap());
+    collection().set(tomap());
   }
 
-  updateAcceptedState(bool accept) async {
-    await firestore
-        .collection("Reservation")
-        .doc(idReservation)
-        .update({"accepted": accept});
+  updateAcceptedState(int accept) async {
+    await collection().update({"etatReservation": accept});
+  }
+
+  annuletReservation() async {
+    updateAcceptedState(-1);
+    // final transactions =
+    await firestore.collection("TransactionApp").get().then((value) {
+      value.docs.map((tansaction) async {
+        final transaction = TransactionApp.fromJson(tansaction.data());
+        if (transaction.idReservation == idReservation) {
+          await transaction.modifierEtat(-1);
+        }
+      });
+    });
   }
 }
