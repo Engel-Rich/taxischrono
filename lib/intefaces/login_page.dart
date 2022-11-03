@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxischrono/delayed_animation.dart';
+
+import 'package:taxischrono/intefaces/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
+import 'package:taxischrono/varibles/variables.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +15,7 @@ class LoginPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Colors.black,
             size: 30,
@@ -25,7 +29,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 40,
                 horizontal: 30,
               ),
@@ -37,13 +41,13 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       "Connecter l'adresse e-mail",
                       style: GoogleFonts.poppins(
-                        color: d_red,
+                        color: dredColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  SizedBox(height: 22),
+                  const SizedBox(height: 22),
                   DelayedAnimation(
                     delay: 2500,
                     child: Text(
@@ -58,16 +62,16 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 35),
-            LoginForm(),
-            SizedBox(height: 125),
+            const SizedBox(height: 35),
+            const LoginForm(),
+            const SizedBox(height: 125),
             DelayedAnimation(
               delay: 5500,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: d_red,
-                  padding: EdgeInsets.symmetric(
+                  shape: const StadiumBorder(),
+                  backgroundColor: dredColor,
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
                   ),
@@ -84,17 +88,17 @@ class LoginPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyApp(),
+                      builder: (context) => const MyApp(),
                     ),
                   );
                 },
               ),
             ),
-            SizedBox(height: 90),
+            const SizedBox(height: 90),
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: EdgeInsets.only(right: 35),
+                padding: const EdgeInsets.only(right: 35),
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -121,8 +125,10 @@ class LoginPage extends StatelessWidget {
 }
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
   @override
-  _LoginFormState createState() => _LoginFormState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
@@ -130,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 30,
       ),
       child: Column(
@@ -146,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           DelayedAnimation(
             delay: 4500,
             child: TextField(
@@ -157,7 +163,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 labelText: 'Mot de passe',
                 suffixIcon: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.visibility,
                     color: Colors.black,
                   ),
