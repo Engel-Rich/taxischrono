@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:taxischrono/delayed_animation.dart';
+import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
-import 'package:taxischrono/login_page.dart';
+import 'package:taxischrono/screens/register.dart';
 
-class SignupPage extends StatelessWidget {
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +14,7 @@ class SignupPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: Colors.black,
             size: 30,
@@ -26,7 +28,7 @@ class SignupPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 40,
                 horizontal: 30,
               ),
@@ -36,7 +38,7 @@ class SignupPage extends StatelessWidget {
                   DelayedAnimation(
                     delay: 1500,
                     child: Text(
-                      "Formulaire d'enregistrement",
+                      "Connecter l'adresse e-mail",
                       style: GoogleFonts.poppins(
                         color: d_red,
                         fontSize: 25,
@@ -44,11 +46,11 @@ class SignupPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 22),
+                  const SizedBox(height: 22),
                   DelayedAnimation(
                     delay: 2500,
                     child: Text(
-                      "  Enregistrez vous et commencer a profiter de nos différents packages et disponibilités pour vos multiples déplacements.",
+                      "Il est recommandé de vous connecter avec votre adresse e-mail pour mieux protéger vos informations.",
                       style: GoogleFonts.poppins(
                         color: Colors.grey[600],
                         fontSize: 16,
@@ -59,51 +61,22 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 35),
-            SignupForm(),
-            SizedBox(height: 125),
+            const SizedBox(height: 35),
+            const LoginForm(),
+            const SizedBox(height: 125),
             DelayedAnimation(
               delay: 5500,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: d_red,
-                  padding: EdgeInsets.symmetric(
+                  shape: const StadiumBorder(),
+                  backgroundColor: d_red,
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
                   ),
                 ),
                 child: Text(
-                  'Enregistrer',
-                  style: GoogleFonts.poppins(
-                    color: const Color.fromARGB(255, 219, 198, 9),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                },
-              ),
-            ),
-            DelayedAnimation(
-              delay: 5500,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  primary: d_red,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 125,
-                    vertical: 13,
-                  ),
-                ),
-                child: Text(
-                  'J\'ai deja un Compte',
+                  'CONFIRMER',
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 15,
@@ -114,17 +87,47 @@ class SignupPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginPage(),
+                      builder: (context) => MyApp(),
                     ),
                   );
                 },
               ),
             ),
-            SizedBox(height: 90),
+            const SizedBox(height: 10),
+            DelayedAnimation(
+              delay: 5500,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  backgroundColor: d_red,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 125,
+                    vertical: 13,
+                  ),
+                ),
+                child: Text(
+                  'Pas de compte? Creer le votre ici',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignupPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 90),
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: EdgeInsets.only(right: 35),
+                padding: const EdgeInsets.only(right: 35),
                 child: TextButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -150,57 +153,24 @@ class SignupPage extends StatelessWidget {
   }
 }
 
-class SignupForm extends StatefulWidget {
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
   @override
-  _SignupFormState createState() => _SignupFormState();
+  // ignore: library_private_types_in_public_api
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
+class _LoginFormState extends State<LoginForm> {
   var _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 30,
       ),
       child: Column(
         children: [
-          DelayedAnimation(
-            delay: 3500,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Votre Nom',
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          DelayedAnimation(
-            delay: 3500,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Votre Prenom',
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          DelayedAnimation(
-            delay: 3500,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Votre Numero de Telephone',
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
           DelayedAnimation(
             delay: 3500,
             child: TextField(
@@ -212,31 +182,7 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ),
           ),
-          SizedBox(height: 10),
-          DelayedAnimation(
-            delay: 3500,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Votre Ville',
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          DelayedAnimation(
-            delay: 3500,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Votre Adresse',
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
+          const SizedBox(height: 30),
           DelayedAnimation(
             delay: 4500,
             child: TextField(
@@ -247,31 +193,7 @@ class _SignupFormState extends State<SignupForm> {
                 ),
                 labelText: 'Mot de passe',
                 suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.visibility,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          DelayedAnimation(
-            delay: 4500,
-            child: TextField(
-              obscureText: _obscureText,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.grey[400],
-                ),
-                labelText: 'Confirmer Mot de passe',
-                suffixIcon: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.visibility,
                     color: Colors.black,
                   ),

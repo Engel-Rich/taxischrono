@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:taxischrono/welcome_page.dart';
+import 'package:taxischrono/screens/welcome_page.dart';
 
 const d_red = Color.fromARGB(248, 255, 233, 33);
 void main() {

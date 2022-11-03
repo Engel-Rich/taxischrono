@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:taxischrono/delayed_animation.dart';
+import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
-import 'package:taxischrono/login_page.dart';
+import 'package:taxischrono/screens/login_page.dart';
 
 class SocialPage extends StatelessWidget {
+  const SocialPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class SocialPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
             size: 30,
@@ -28,7 +30,7 @@ class SocialPage extends StatelessWidget {
           children: [
             DelayedAnimation(
               delay: 1500,
-              child: Container(
+              child: SizedBox(
                 height: 280,
                 child: Image.asset('images/illustration1.jpg'),
               ),
@@ -50,7 +52,7 @@ class SocialPage extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       "Connecter vous et commencer a profiter de nos différents packages et disponibilités pour vos multiples déplacements",
                       textAlign: TextAlign.center,
@@ -66,7 +68,7 @@ class SocialPage extends StatelessWidget {
             DelayedAnimation(
               delay: 3500,
               child: Container(
-                margin: EdgeInsets.symmetric(
+                margin: const EdgeInsets.symmetric(
                   vertical: 14,
                   horizontal: 40,
                 ),
@@ -77,20 +79,20 @@ class SocialPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                        primary: d_red,
-                        padding: EdgeInsets.all(13),
+                        shape: const StadiumBorder(),
+                        backgroundColor: d_red,
+                        padding: const EdgeInsets.all(13),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.mail_outline_outlined),
-                          SizedBox(width: 10),
+                          const Icon(Icons.mail_outline_outlined),
+                          const SizedBox(width: 10),
                           Text(
                             'EMAIL',
                             style: GoogleFonts.poppins(
@@ -102,26 +104,26 @@ class SocialPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                        primary: Color(0xFF576dff),
-                        padding: EdgeInsets.all(13),
+                        shape: const StadiumBorder(),
+                        backgroundColor: const Color(0xFF576dff),
+                        padding: const EdgeInsets.all(13),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          FaIcon(FontAwesomeIcons.facebook),
-                          SizedBox(width: 10),
+                          const FaIcon(FontAwesomeIcons.facebook),
+                          const SizedBox(width: 10),
                           Text(
                             'FACEBOOK',
                             style: GoogleFonts.poppins(
@@ -133,20 +135,20 @@ class SocialPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: StadiumBorder(),
-                        primary: Colors.white,
-                        padding: EdgeInsets.all(13),
+                        shape: const StadiumBorder(),
+                        backgroundColor: Colors.white,
+                        padding: const EdgeInsets.all(13),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +157,7 @@ class SocialPage extends StatelessWidget {
                             'images/google.png',
                             height: 20,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             'GOOGLE',
                             style: GoogleFonts.poppins(
@@ -167,7 +169,7 @@ class SocialPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
