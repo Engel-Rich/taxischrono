@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxischrono/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
+import 'package:taxischrono/register.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -85,6 +86,36 @@ class LoginPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => MyApp(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            DelayedAnimation(
+              delay: 5500,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: StadiumBorder(),
+                  primary: d_red,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 125,
+                    vertical: 13,
+                  ),
+                ),
+                child: Text(
+                  'Pas de compte? Creer le votre ici',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignupPage(),
                     ),
                   );
                 },

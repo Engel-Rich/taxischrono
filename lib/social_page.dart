@@ -52,7 +52,7 @@ class SocialPage extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Enregistrez vous et commencer a profiter de nos différents packages et disponibilités pour vos multiples déplacements",
+                      "Connecter vous et commencer a profiter de nos différents packages et disponibilités pour vos multiples déplacements",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         color: Colors.grey,

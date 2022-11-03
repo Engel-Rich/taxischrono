@@ -5,13 +5,15 @@ import 'package:taxischrono/main.dart';
 import 'package:taxischrono/social_page.dart';
 
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEDECF2),
+      backgroundColor: const Color(0xFFEDECF2),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(
+          margin: const EdgeInsets.symmetric(
             vertical: 60,
             horizontal: 30,
           ),
