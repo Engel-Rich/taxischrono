@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,6 +16,7 @@ final authentication = FirebaseAuth.instance;
 final datatbase = FirebaseDatabase.instance;
 final firestore = FirebaseFirestore.instance;
 
+final police = GoogleFonts.poppins(fontSize: 14);
 // les variables pour l'OTP
 var smsCode = "";
 // const

@@ -57,6 +57,30 @@ class GooGleMapServices extends GetxController {
     return null;
   }
 
+  // fonction pour la recherche autocomplette des étineraires
+
+  static chekPlaceAutoComplette(String placeName, String sessionToken) async {
+    final url =
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&language=fr&key=$mapApiKey&&sessiontoken=$sessionToken&components=country:CM";
+
+    // final requette =
+    await http.get(Uri.parse(url)).then((value) {
+      if (value.statusCode == 200) {
+        final res = jsonDecode(value.body);
+        if (res['status'] == "OK") {
+          final predictions = res['predictions'];
+
+          var listPrediction = (predictions as List)
+              .map((place) => Place.fromJson(place))
+              .toList();
+          return listPrediction;
+        }
+      } else {
+        return 'echec';
+      }
+    });
+  }
+
 // fonction permettant de récuperer le nom à partir de la position
   static Future<String> getNamePlaceFromPosition(LatLng position) async {
     final url =
@@ -65,10 +89,44 @@ class GooGleMapServices extends GetxController {
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return body['results'][0]["formatted_address"];
+      // final adresse = Adresse(
+      //   adresseCode: body['results'][0]["address_components"][0]['long_name'],
+      //   adresseposition: position,
+      //   adresseCompletteCode: body['results'][0]['formatted_address'],
+      //   adresseCountrieName: body['results'][6]['address_components']
+      //       ['long_name'],
+      //   adresseName: body['results'][0]['address_components'][5]['long_name'],
+      // );
+      // return adresse;
     } else {
       return "echec";
     }
   }
+
+// fonction d'obtention des informations d'otentification à partir d'une place.
+  static checkDetailFromPlace(String placeid) async {
+    final url =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeid&key=$mapApiKey";
+    await http.get(Uri.parse(url)).then((value) {
+      if (value.statusCode == 200) {
+        final res = jsonDecode(value.body);
+        if (res['status'] == "OK") {
+          final predictions = res['result'];
+
+          var adresse = Adresse(
+            adresseCode: placeid,
+            adresseName: predictions['name'],
+            adresseposition: LatLng(predictions['geometry']['location']['lat'],
+                predictions['geometry']['location']['lng']),
+          );
+          return adresse;
+        }
+      } else {
+        return 'echec';
+      }
+    });
+  }
+// fin de la classe des services Maps.
 }
 
 class RouteModel {
@@ -100,4 +158,34 @@ class TempsNecessaire {
   TempsNecessaire({required this.text, required this.value});
   factory TempsNecessaire.froMap(Map<String, dynamic> distance) =>
       TempsNecessaire(text: distance['text'], value: distance['value']);
+}
+
+class Adresse {
+  final LatLng adresseposition;
+  final String adresseCode;
+  final String? adresseCountrieName;
+  final String adresseName;
+  Adresse({
+    required this.adresseCode,
+    required this.adresseposition,
+    this.adresseCountrieName,
+    required this.adresseName,
+  });
+}
+
+class Place {
+  final String mainName;
+  final String secondaryName;
+  final String placeId;
+  Place({
+    required this.placeId,
+    required this.mainName,
+    required this.secondaryName,
+  });
+
+  factory Place.fromJson(Map<String, dynamic> map) => Place(
+        placeId: map['place_id'],
+        mainName: map['structured_formatting']['main_text'],
+        secondaryName: map['structured_formatting']['secondary_text'],
+      );
 }
