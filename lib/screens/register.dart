@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:taxischrono/intefaces/delayed_animation.dart';
+import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
-import 'package:taxischrono/varibles/variables.dart';
+import 'package:taxischrono/screens/login_page.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatelessWidget {
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +38,9 @@ class LoginPage extends StatelessWidget {
                   DelayedAnimation(
                     delay: 1500,
                     child: Text(
-                      "Connecter l'adresse e-mail",
+                      "Formulaire d'enregistrement",
                       style: GoogleFonts.poppins(
-                        color: dredColor,
+                        color: d_red,
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
                       ),
@@ -51,7 +50,7 @@ class LoginPage extends StatelessWidget {
                   DelayedAnimation(
                     delay: 2500,
                     child: Text(
-                      "Il est recommandé de vous connecter avec votre adresse e-mail pour mieux protéger vos informations.",
+                      "  Enregistrez vous et commencer a profiter de nos différents packages et disponibilités pour vos multiples déplacements.",
                       style: GoogleFonts.poppins(
                         color: Colors.grey[600],
                         fontSize: 16,
@@ -63,21 +62,50 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 35),
-            const LoginForm(),
+            const SignupForm(),
             const SizedBox(height: 125),
             DelayedAnimation(
               delay: 5500,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
-                  backgroundColor: dredColor,
+                  backgroundColor: d_red,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
                   ),
                 ),
                 child: Text(
-                  'CONFIRMER',
+                  'Enregistrer',
+                  style: GoogleFonts.poppins(
+                    color: const Color.fromARGB(255, 219, 198, 9),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            DelayedAnimation(
+              delay: 5500,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  backgroundColor: d_red,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 125,
+                    vertical: 13,
+                  ),
+                ),
+                child: Text(
+                  'J\'ai deja un Compte',
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 15,
@@ -88,7 +116,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MyApp(),
+                      builder: (context) => const LoginPage(),
                     ),
                   );
                 },
@@ -124,14 +152,15 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class SignupForm extends StatefulWidget {
+  const SignupForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  // ignore: library_private_types_in_public_api
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   var _obscureText = true;
   @override
   Widget build(BuildContext context) {
@@ -145,6 +174,42 @@ class _LoginFormState extends State<LoginForm> {
             delay: 3500,
             child: TextField(
               decoration: InputDecoration(
+                labelText: 'Votre Nom',
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 3500,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Votre Prenom',
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 3500,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Votre Numero de Telephone',
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 3500,
+            child: TextField(
+              decoration: InputDecoration(
                 labelText: 'Votre e-mail',
                 labelStyle: TextStyle(
                   color: Colors.grey[400],
@@ -152,7 +217,31 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 3500,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Votre Ville',
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 3500,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Votre Adresse',
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
           DelayedAnimation(
             delay: 4500,
             child: TextField(
@@ -162,6 +251,30 @@ class _LoginFormState extends State<LoginForm> {
                   color: Colors.grey[400],
                 ),
                 labelText: 'Mot de passe',
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.visibility,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          DelayedAnimation(
+            delay: 4500,
+            child: TextField(
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Colors.grey[400],
+                ),
+                labelText: 'Confirmer Mot de passe',
                 suffixIcon: IconButton(
                   icon: const Icon(
                     Icons.visibility,
