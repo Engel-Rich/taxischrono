@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:taxischrono/services/firebaseauthservice.dart';
 
 import 'package:taxischrono/varibles/variables.dart';
 
 import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
 import 'package:taxischrono/screens/login_page.dart';
-
 
 class SocialPage extends StatelessWidget {
   const SocialPage({super.key});
@@ -42,7 +42,6 @@ class SocialPage extends StatelessWidget {
                 height: 280,
                 child: Image.asset('images/illustration1.jpg'),
               ),
-
             ),
             DelayedAnimation(
               delay: 2500,
@@ -94,11 +93,7 @@ class SocialPage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
-<<<<<<<< HEAD:lib/intefaces/social_page.dart
                         backgroundColor: dredColor,
-========
-                        backgroundColor: d_red,
->>>>>>>> 7fdfec98e39a073132af52bc7fcabe7cd7d9aafd:lib/screens/social_page.dart
                         padding: const EdgeInsets.all(13),
                       ),
                       child: Row(
@@ -150,7 +145,6 @@ class SocialPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-<<<<<<<< HEAD:lib/intefaces/social_page.dart
                       onPressed: () async {
                         await Authservices().googlesingIn();
                         // Navigator.push(
@@ -159,15 +153,6 @@ class SocialPage extends StatelessWidget {
                         //     builder: (context) => LoginPage(),
                         //   ),
                         // );
-========
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
->>>>>>>> 7fdfec98e39a073132af52bc7fcabe7cd7d9aafd:lib/screens/social_page.dart
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),

@@ -28,6 +28,10 @@ const etatTransaction = {
   2: "en cours"
 };
 
+// la variable qui servira de hauteur dans l'Application
+spacerHeight(double hauteur) => SizedBox(height: hauteur);
+Color blanc = Colors.white;
+Color vert = Colors.green;
 const mapApiKey = "AIzaSyDRiuLYKs1ymgiW97p3ybAuQLOQcBDqUvg";
 const younde = LatLng(3.866667, 11.516667);
 const String idServiceClient = "taxisChronoInccCenter";

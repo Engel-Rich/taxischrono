@@ -2,35 +2,32 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:taxischrono/varibles/variables.dart';
 
-class GooGleMapServices extends GetxController {
+class GooGleMapServices {
   // init user Location. for get User current location
-  static var currentPosition = const LatLng(3.866667, 11.516667).obs;
+  static LatLng? currentPosition;
   static requestLocation() async {
     bool serviceEnable = false;
-    activelocation() async => await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.high)
-            .then((value) async {
-          currentPosition.value = LatLng(value.latitude, value.longitude);
+    final permissions = await Geolocator.requestPermission();
+    if (permissions != LocationPermission.denied &&
+        permissions != LocationPermission.deniedForever) {
+      activelocation() async => await Geolocator.getCurrentPosition(
+                  desiredAccuracy: LocationAccuracy.high)
+              .then((value) async {
+            currentPosition = LatLng(value.latitude, value.longitude);
 
-          final position =
-              await getNamePlaceFromPosition(currentPosition.value);
-          debugPrint("your position : $position");
-        });
-    serviceEnable = await Geolocator.isLocationServiceEnabled();
-    if (serviceEnable) {
-      activelocation();
-    } else {
-      final permissions = await Geolocator.requestPermission();
-      if (permissions != LocationPermission.denied &&
-          permissions != LocationPermission.deniedForever) {
+            final position = await getNamePlaceFromPosition(currentPosition!);
+            debugPrint("your position : $position");
+          });
+      serviceEnable = await Geolocator.isLocationServiceEnabled();
+      if (serviceEnable) {
         activelocation();
       }
-    }
+    } else {}
   }
 
   // request User routes.
@@ -59,22 +56,23 @@ class GooGleMapServices extends GetxController {
 
   // fonction pour la recherche autocomplette des étineraires
 
-  static chekPlaceAutoComplette(String placeName, String sessionToken) async {
+  static Future chekPlaceAutoComplette(
+      String placeName, String sessionToken) async {
     final url =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&language=fr&key=$mapApiKey&&sessiontoken=$sessionToken&components=country:CM";
-
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&language=fr&key=$mapApiKey&components=country:CM";
+    var listPrediction = [];
     // final requette =
     await http.get(Uri.parse(url)).then((value) {
       if (value.statusCode == 200) {
         final res = jsonDecode(value.body);
-        if (res['status'] == "OK") {
-          final predictions = res['predictions'];
+        // if (res['status'] == 'OK') {
+        final predictions = res['predictions'];
 
-          var listPrediction = (predictions as List)
-              .map((place) => Place.fromJson(place))
-              .toList();
-          return listPrediction;
-        }
+        listPrediction = (predictions as List)
+            .map((place) => Place.fromJson(place))
+            .toList();
+        return listPrediction;
+        // }
       } else {
         return 'echec';
       }

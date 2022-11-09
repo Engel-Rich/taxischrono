@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
 import 'package:taxischrono/screens/login_page.dart';
+import 'package:taxischrono/varibles/variables.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -40,7 +41,7 @@ class SignupPage extends StatelessWidget {
                     child: Text(
                       "Formulaire d'enregistrement",
                       style: GoogleFonts.poppins(
-                        color: d_red,
+                        color: dredColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
                       ),
@@ -69,7 +70,7 @@ class SignupPage extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
-                  backgroundColor: d_red,
+                  backgroundColor: dredColor,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
@@ -93,12 +94,13 @@ class SignupPage extends StatelessWidget {
                 },
               ),
             ),
+            spacerHeight(10),
             DelayedAnimation(
               delay: 5500,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
-                  backgroundColor: d_red,
+                  backgroundColor: dredColor,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
@@ -145,6 +147,7 @@ class SignupPage extends StatelessWidget {
                 ),
               ),
             ),
+            spacerHeight(15),
           ],
         ),
       ),
