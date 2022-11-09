@@ -55,6 +55,7 @@ dependencies:
   url_launcher: ^6.1.6
   flutter_polyline_points: ^1.0.0
   sliding_up_panel: ^2.0.0+1
+  page_transition: ^2.0.9
 
 
 

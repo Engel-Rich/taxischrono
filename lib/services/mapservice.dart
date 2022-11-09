@@ -65,6 +65,7 @@ class GooGleMapServices {
     await http.get(Uri.parse(url)).then((value) {
       if (value.statusCode == 200) {
         final res = jsonDecode(value.body);
+        print(res);
         // if (res['status'] == 'OK') {
         final predictions = res['predictions'];
 
@@ -77,6 +78,7 @@ class GooGleMapServices {
         return 'echec';
       }
     });
+    return listPrediction;
   }
 
 // fonction permettant de récuperer le nom à partir de la position
@@ -161,12 +163,11 @@ class TempsNecessaire {
 class Adresse {
   final LatLng adresseposition;
   final String adresseCode;
-  final String? adresseCountrieName;
+
   final String adresseName;
   Adresse({
     required this.adresseCode,
     required this.adresseposition,
-    this.adresseCountrieName,
     required this.adresseName,
   });
 }
