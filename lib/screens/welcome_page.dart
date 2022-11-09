@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
 import 'package:taxischrono/screens/delayed_animation.dart';
-import 'package:taxischrono/main.dart';
+
 import 'package:taxischrono/screens/social_page.dart';
 
 class WelcomePage extends StatelessWidget {

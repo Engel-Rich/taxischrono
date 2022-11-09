@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:taxischrono/services/mapservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -14,12 +12,24 @@ class SearchDestinaitionPage extends StatefulWidget {
 
 class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
   Future? places;
-  Place? startPlace;
+
+  // //////////////////////////
+  // les controlleurs de champs de saisie;
+  /////////////
   TextEditingController controllerstart = TextEditingController();
   TextEditingController controllersend = TextEditingController();
-  Place? endPlace;
-  bool find = false;
 
+  // /// les variables qui seront envoyer pour mes positions de départ et d'arriver
+  Place? endPlace;
+  Place? startPlace;
+
+  bool isDepart =
+      true; //permet de vérifier que le foccus est sur le champs de départ
+
+  bool find =
+      false; //permet de vérifier que la recherche est terminer afin d'affiche le bouton de validation
+
+  bool vide = true; //permet de vérifier que le champs de saisie n'est pas vide
   //
   @override
   Widget build(BuildContext context) {
@@ -72,18 +82,39 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: champsdeRecherche(
+                          onTap: () {
+                            setState(() {
+                              isDepart = true;
+                              find = false;
+                            });
+                          },
                           controller: controllerstart,
                           changement: (value) {
+                            setState(() {
+                              vide = value.trim().isEmpty;
+                            });
                             findPlace(value);
-                            setState(() {});
+                            find = false;
                           },
                           hintext: "Point de départ"),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: champsdeRecherche(
+                        onTap: () {
+                          setState(() {
+                            isDepart = false;
+                            find = false;
+                          });
+                        },
                         controller: controllersend,
-                        changement: (value) {},
+                        changement: (value) {
+                          setState(() {
+                            vide = value.trim().isEmpty;
+                            find = false;
+                          });
+                          findPlace(value);
+                        },
                         hintext: "Ou allons nous ?",
                       ),
                     )
@@ -96,7 +127,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                 shape: shapeBorder,
                 child: Container(
                   padding: const EdgeInsets.all(12),
-                  child: places == null
+                  child: places == null || vide
                       ? Center(
                           child: Text(
                           "Recherchez un endroit",
@@ -118,12 +149,14 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                                   snapshot.hasData &&
                                   snapshot.data!.isNotEmpty)) {
                                 return ListView.separated(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
                                     final place = snapshot.data!;
                                     return placeDisplay(
                                       place: place[index],
-                                      ontap: () {},
+                                      ontap: () => setController(place[index]),
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -139,7 +172,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                                       letterSpacing: 3,
                                       wordSpacing: 2),
                                 ));
-                              } else if (snapshot.data!.isEmpty) {
+                              } else if (snapshot.data!.isEmpty && !vide) {
                                 return Center(
                                     child: Text(
                                   'Aucun androit ne coerespond a votre recherche ',
@@ -184,11 +217,27 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     );
   }
 
-  setController(
-    TextEditingController constroller,
-    Place placeClick,
-    Place placeChange,
-  ) {}
+  setController(Place place) {
+    FocusScope.of(context).unfocus();
+    if (isDepart) {
+      setState(() {
+        startPlace = place;
+        controllerstart.text = place.mainName;
+        find =
+            (controllerstart.text.isNotEmpty && controllersend.text.isNotEmpty);
+        places = null;
+      });
+    } else {
+      setState(() {
+        endPlace = place;
+        controllersend.text = place.mainName;
+        find =
+            (controllerstart.text.isNotEmpty && controllersend.text.isNotEmpty);
+        places = null;
+      });
+    }
+  }
+
   findPlace(
     String valeur,
   ) {
@@ -199,19 +248,6 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     } catch (e) {
       debugPrint('erreur: $e');
     }
-
-    //     .then((value) {
-    //   if (value != null) {
-    //     find = true;
-    //   } else {
-    //     setState(() {
-    //       places = value as List<Place>;
-    //     });
-    //   }
-    // });
-    // setState(() {
-    //   find = false;
-    // });
   }
 }
 

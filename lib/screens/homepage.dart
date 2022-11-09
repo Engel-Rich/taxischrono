@@ -53,12 +53,10 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             SlidingUpPanel(
-                color: vert,
                 parallaxEnabled: true,
                 minHeight: taille(context).height * 0.17,
                 maxHeight: taille(context).height * 0.35,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(20)),
                 body: GoogleMap(
@@ -78,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                               height: 10,
                               width: 30,
                               decoration: BoxDecoration(
-                                  color: blanc,
+                                  color: Colors.grey.shade400,
                                   borderRadius: BorderRadius.circular(20)),
                             ),
                           ),

@@ -46,16 +46,18 @@ Widget boutonText(
         ),
         child: Text(
           text,
-          style: police,
+          style: police.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
     );
 TextFormField champsdeRecherche({
   required void Function(String value)? changement,
   required String hintext,
+  void Function()? onTap,
   TextEditingController? controller,
 }) =>
     TextFormField(
+      onTap: onTap,
       controller: controller,
       style: police,
       onChanged: changement,

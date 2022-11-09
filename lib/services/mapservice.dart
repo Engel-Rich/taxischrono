@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -65,7 +66,7 @@ class GooGleMapServices {
     await http.get(Uri.parse(url)).then((value) {
       if (value.statusCode == 200) {
         final res = jsonDecode(value.body);
-        print(res);
+        debugPrint(res);
         // if (res['status'] == 'OK') {
         final predictions = res['predictions'];
 
@@ -89,15 +90,6 @@ class GooGleMapServices {
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return body['results'][0]["formatted_address"];
-      // final adresse = Adresse(
-      //   adresseCode: body['results'][0]["address_components"][0]['long_name'],
-      //   adresseposition: position,
-      //   adresseCompletteCode: body['results'][0]['formatted_address'],
-      //   adresseCountrieName: body['results'][6]['address_components']
-      //       ['long_name'],
-      //   adresseName: body['results'][0]['address_components'][5]['long_name'],
-      // );
-      // return adresse;
     } else {
       return "echec";
     }
