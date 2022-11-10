@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -271,27 +273,33 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
   createRouteModel() async {
     try {
       dialogueDechargement(context);
+      print(startPlace!.toMap());
+      print(endPlace!.toMap());
       final start =
           await GooGleMapServices.checkDetailFromPlace(startPlace!.placeId);
+      print(start.toMap());
       final end =
           await GooGleMapServices.checkDetailFromPlace(endPlace!.placeId);
-      await GooGleMapServices()
-          .getRoute(
-        start: (start as Adresse).adresseposition,
-        end: (end as Adresse).adresseposition,
-      )
-          .then((value) {
-        Navigator.of(context).pop();
-        Navigator.of(context).push(
-          PageTransition(
-              child: MapReservation(
-                routeModel: value!,
-                adresseend: end,
-                adressestart: start,
-              ),
-              type: PageTransitionType.fade),
-        );
-      });
+      print(end.toMap());
+      // await GooGleMapServices()
+      //     .getRoute(
+      //   start: (start as Adresse).adresseposition,
+      //   end: (end as Adresse).adresseposition,
+      // )
+      //     .then((value) {
+      //   print(value!.toMap());
+      //   Navigator.of(context).pop();
+      //   Navigator.of(context).push(
+      //     PageTransition(
+      //         child: MapReservation(
+      //           routeModel: value,
+      //           adresseend: end,
+      //           adressestart: start,
+      //         ),
+      //         type: PageTransitionType.fade),
+      //   );
+      // });
+
     } catch (e) {
       debugPrint('Error : $e');
     }
@@ -312,6 +320,7 @@ Widget buildDivider() => const Padding(
 dialogueDechargement(BuildContext context) {
   showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return SimpleDialog(
           contentPadding: const EdgeInsets.all(15),

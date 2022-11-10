@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import "package:flutter/material.dart";
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -30,16 +31,24 @@ class _MapReservationState extends State<MapReservation> {
   // les variables
   ///////////////.
 
-  Completer controllerMap = Completer<GoogleMapController>();
+  Completer<GoogleMapController> controllerMap =
+      Completer<GoogleMapController>();
 
   String destination = '';
+  PolylinePoints polylinePoints = PolylinePoints();
+
   // final scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool voirs = false;
-  Set<Polyline> polulinesSets = {};
+  Map<PolylineId, Polyline> polylinesSets = {};
   Set<Marker> markersSets = {};
+
+  // la finction de démarage.
   @override
   void initState() {
-    GooGleMapServices.requestLocation();
+    getLines();
+    markermecker();
+    // GooGleMapServices.requestLocation();
     super.initState();
   }
 
@@ -59,8 +68,16 @@ class _MapReservationState extends State<MapReservation> {
                     const BorderRadius.vertical(top: Radius.circular(20)),
                 body: GoogleMap(
                   initialCameraPosition: CameraPosition(
-                      target: GooGleMapServices.currentPosition ?? younde,
-                      zoom: 12),
+                    target: widget.adressestart.adresseposition,
+                    zoom: 14,
+                  ),
+                  onMapCreated: (controller) {
+                    setState(() {
+                      controllerMap.complete(controller);
+                    });
+                  },
+                  markers: markersSets,
+                  polylines: Set<Polyline>.of(polylinesSets.values),
                 ),
                 panelBuilder: (controller) {
                   return SafeArea(
@@ -117,6 +134,82 @@ class _MapReservationState extends State<MapReservation> {
   ///////////////////
   ///les fonctions
   ///////////////.
+
+// creation  de la ligne
+
+  getLines() async {
+    // PolylineResult polylineResult =
+    List<LatLng> polylineCoordinates = [];
+    await polylinePoints
+        .getRouteBetweenCoordinates(
+      mapApiKey,
+      PointLatLng(
+        widget.adressestart.adresseposition.latitude,
+        widget.adressestart.adresseposition.longitude,
+      ),
+      PointLatLng(
+        widget.adresseend.adresseposition.latitude,
+        widget.adresseend.adresseposition.longitude,
+      ),
+      travelMode: TravelMode.driving,
+    )
+        .then(
+      (value) {
+        if (value.points.isNotEmpty) {
+          for (var element in value.points) {
+            polylineCoordinates
+                .add(LatLng(element.latitude, element.longitude));
+          }
+        } else {
+          debugPrint(value.errorMessage);
+        }
+        addpolylinespoints(polylineCoordinates);
+      },
+    );
+  }
+
+  // addpolylinespoins permet de récupérer une liste de latlng et ajouter aux poins.
+
+  addpolylinespoints(List<LatLng> listlatlng) async {
+    PolylineId id = const PolylineId("poly");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      points: listlatlng,
+      color: vert,
+      width: 5,
+    );
+    polylinesSets[id] = polyline;
+  }
+
+// mettre à jour la liste des markers
+
+  markermecker() {
+    final debut = widget.adressestart;
+    final fin = widget.adresseend;
+
+    // ajout du point de départ
+    markersSets.add(
+      Marker(
+        markerId: MarkerId(debut.adresseCode),
+        position: debut.adresseposition,
+        infoWindow: InfoWindow(
+          title: debut.adresseName,
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ),
+    );
+    // Ajout du point d'arrivé
+    markersSets.add(
+      Marker(
+        markerId: MarkerId(fin.adresseCode),
+        position: fin.adresseposition,
+        infoWindow: InfoWindow(
+          title: fin.adresseName,
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ),
+    );
+  }
 
   // fin de la fontion principale
 }
