@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
 import 'package:taxischrono/screens/register.dart';
+import 'package:taxischrono/varibles/variables.dart';
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -40,7 +43,7 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       "Connecter l'adresse e-mail",
                       style: GoogleFonts.poppins(
-                        color: d_red,
+                        color: dredColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
                       ),
@@ -69,7 +72,9 @@ class LoginPage extends StatelessWidget {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
-                  backgroundColor: d_red,
+
+                  backgroundColor: dredColor,
+
                   padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
@@ -87,19 +92,20 @@ class LoginPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyApp(),
+                      builder: (context) => const MyApp(),
                     ),
                   );
                 },
               ),
             ),
+
             const SizedBox(height: 10),
             DelayedAnimation(
               delay: 5500,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: const StadiumBorder(),
-                  backgroundColor: d_red,
+                  backgroundColor: dredColor,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 125,
                     vertical: 13,
@@ -123,6 +129,7 @@ class LoginPage extends StatelessWidget {
                 },
               ),
             ),
+
             const SizedBox(height: 90),
             Align(
               alignment: Alignment.centerRight,
@@ -157,8 +164,11 @@ class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
   @override
+
+  State<LoginForm> createState() => _LoginFormState();
+
   // ignore: library_private_types_in_public_api
-  _LoginFormState createState() => _LoginFormState();
+
 }
 
 class _LoginFormState extends State<LoginForm> {

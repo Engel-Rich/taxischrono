@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:taxischrono/services/firebaseauthservice.dart';
+
+import 'package:taxischrono/varibles/variables.dart';
+
 import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
 import 'package:taxischrono/screens/login_page.dart';
@@ -14,6 +18,7 @@ class SocialPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
+        title: Text(authentication.currentUser!.displayName ?? "Auccun nom"),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -30,6 +35,9 @@ class SocialPage extends StatelessWidget {
           children: [
             DelayedAnimation(
               delay: 1500,
+// <<<<<<<< HEAD:lib/intefaces/social_page.dart
+//               child: Image.asset('images/illustration1.jpg'),
+// ========
               child: SizedBox(
                 height: 280,
                 child: Image.asset('images/illustration1.jpg'),
@@ -47,7 +55,7 @@ class SocialPage extends StatelessWidget {
                     Text(
                       "Le changement commence ici",
                       style: GoogleFonts.poppins(
-                        color: d_red,
+                        color: dredColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -85,7 +93,7 @@ class SocialPage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
-                        backgroundColor: d_red,
+                        backgroundColor: dredColor,
                         padding: const EdgeInsets.all(13),
                       ),
                       child: Row(
@@ -137,13 +145,14 @@ class SocialPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ),
-                        );
+                      onPressed: () async {
+                        await Authservices().googlesingIn();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => LoginPage(),
+                        //   ),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),

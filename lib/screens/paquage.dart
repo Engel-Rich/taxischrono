@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taxischrono/constants.dart';
+import 'package:taxischrono/varibles/variables.dart';
 
 import 'package:taxischrono/screens/sidebar.dart';
 
@@ -80,20 +81,20 @@ class Pack extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(
-                height: 245,
-                width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    packDetail("Pack1", 1000, 4.5, 'illustration1.jpg'),
-                    packDetail("Pack2", 2000, 4.5, 'illustration2.jpg'),
-                    packDetail("Pack3", 3000, 4.5, 'illustration3.png'),
-                    packDetail("Pack4", 4000, 4.5, 'illustration4.JPG'),
-                    packDetail("Pack5", 5000, 4.5, 'illustration2.jpg'),
-                  ],
-                ),
-              ),
+              // SizedBox(
+              //   height: 245,
+              //   width: MediaQuery.of(context).size.width,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       packDetail("Pack1", 1000, 4.5, 'illustration1.jpg'),
+              //       packDetail("Pack2", 2000, 4.5, 'illustration2.jpg'),
+              //       packDetail("Pack3", 3000, 4.5, 'illustration3.png'),
+              //       packDetail("Pack4", 4000, 4.5, 'illustration4.JPG'),
+              //       packDetail("Pack5", 5000, 4.5, 'illustration2.jpg'),
+              //     ],
+              //   ),
+              // ),
               const Padding(
                 padding: EdgeInsets.only(top: 30, bottom: 20),
                 child: Text(
@@ -281,14 +282,17 @@ class Pack extends StatelessWidget {
         elevation: 2,
         child: Column(
           children: [
-            Container(
-              height: 96,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                image: DecorationImage(
-                    image: AssetImage('images/$image'), fit: BoxFit.fill),
+            Expanded(
+              child: Container(
+                height: 96,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(5),
+                      topRight: Radius.circular(5)),
+                  image: DecorationImage(
+                      image: AssetImage('images/$image'), fit: BoxFit.fill),
+                ),
               ),
             ),
             Container(
@@ -344,7 +348,7 @@ class Pack extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      careTileGrid("Nombre de ticket"),
+                      careTileGrid("100 tickets"),
                       const SizedBox(
                         width: 5,
                       ),
@@ -374,37 +378,32 @@ class Pack extends StatelessWidget {
                       bottomRight: Radius.circular(5)),
                   color: Color(0xFFFFFFFF),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 2, color: kPrimaryColor),
-                            bottom: BorderSide(width: 2, color: kPrimaryColor),
-                          ),
-                        ),
-                        child: const Text(
-                          "Souscrire",
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 12),
-                      color: kPrimaryColor,
-                      child: Text(
-                        'F cfa $charge',
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+                  color: kPrimaryColor,
+                  child: Text(
+                    'F cfa $charge',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
                 )),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 3),
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 2, color: kPrimaryColor),
+                  bottom: BorderSide(width: 2, color: kPrimaryColor),
+                ),
+              ),
+              child: const Text(
+                "Souscrire",
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),

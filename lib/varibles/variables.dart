@@ -2,18 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // google signin variable;
 
 final googleSignIn = GoogleSignIn();
-
+const dredColor = Color.fromARGB(248, 255, 233, 33);
 // firebase variables
 
 final authentication = FirebaseAuth.instance;
 final datatbase = FirebaseDatabase.instance;
 final firestore = FirebaseFirestore.instance;
 
+final police = GoogleFonts.poppins(fontSize: 14);
 // les variables pour l'OTP
 var smsCode = "";
 // const
@@ -25,8 +29,64 @@ const etatTransaction = {
   2: "en cours"
 };
 
-const mapApiKey = "";
-const mapKey = "AIzaSyDRo0HCox0WQXqoXF8ToJbB9KgBFytNBHo";
+// les type de bouton à utiliser dans l'application
+Widget boutonText(
+        {required BuildContext context,
+        required void Function()? action,
+        required String text}) =>
+    SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: action,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: Text(
+          text,
+          style: police,
+        ),
+      ),
+    );
+TextFormField champsdeRecherche({
+  required void Function(String value)? changement,
+  required String hintext,
+  TextEditingController? controller,
+}) =>
+    TextFormField(
+      controller: controller,
+      style: police,
+      onChanged: changement,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        hintText: hintext,
+        hintStyle: police,
+        filled: true,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: blanc),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        icon: const FaIcon(
+          Icons.location_on_outlined,
+          size: 30,
+        ),
+        fillColor: Colors.grey.shade200.withOpacity(0.7),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black, width: 1.2),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+
+// la variable qui servira de hauteur dans l'Application
+spacerHeight(double hauteur) => SizedBox(height: hauteur);
+Color blanc = Colors.white;
+Color vert = Colors.greenAccent;
+Color noire = Colors.black;
+const mapApiKey = "AIzaSyDRiuLYKs1ymgiW97p3ybAuQLOQcBDqUvg";
+const younde = LatLng(3.866667, 11.516667);
 const String idServiceClient = "taxisChronoInccCenter";
 
 // les fonctions

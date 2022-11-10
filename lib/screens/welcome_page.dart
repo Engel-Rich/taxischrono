@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:taxischrono/varibles/variables.dart';
+
 import 'package:taxischrono/screens/delayed_animation.dart';
 import 'package:taxischrono/main.dart';
 import 'package:taxischrono/screens/social_page.dart';
@@ -21,17 +23,24 @@ class WelcomePage extends StatelessWidget {
             children: [
               DelayedAnimation(
                 delay: 1500,
-                child: SizedBox(
-                  height: 170,
-                  child: Image.asset('images/illustration2.jpg'),
-                ),
+                child: Image.asset('images/illustration2.jpg'),
               ),
               DelayedAnimation(
                 delay: 2500,
-                child: SizedBox(
-                  height: 400,
-                  child: Image.asset('images/illustration4.jpg'),
-                ),
+                child: Image.asset('images/illustration4.JPG'),
+
+//                 child: SizedBox(
+//                   height: 170,
+//                   child: Image.asset('images/illustration2.jpg'),
+//                 ),
+//               ),
+//               DelayedAnimation(
+//                 delay: 2500,
+//                 child: SizedBox(
+//                   height: 400,
+//                   child: Image.asset('images/illustration4.jpg'),
+//                 ),
+// >>>>>>>> 7fdfec98e39a073132af52bc7fcabe7cd7d9aafd:lib/screens/welcome_page.dart
               ),
               DelayedAnimation(
                 delay: 3500,
@@ -56,7 +65,7 @@ class WelcomePage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: d_red,
+                        backgroundColor: dredColor,
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.all(13)),
                     child: const Text('COMMENCER'),

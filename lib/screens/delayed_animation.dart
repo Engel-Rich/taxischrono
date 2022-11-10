@@ -7,8 +7,10 @@ class DelayedAnimation extends StatefulWidget {
   const DelayedAnimation({super.key, required this.delay, required this.child});
 
   @override
+  State<DelayedAnimation> createState() => _DelayedAnimationState();
+
   // ignore: library_private_types_in_public_api
-  _DelayedAnimationState createState() => _DelayedAnimationState();
+
 }
 
 class _DelayedAnimationState extends State<DelayedAnimation>
