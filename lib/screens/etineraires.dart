@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:taxischrono/screens/mapreservation.dart';
 import 'package:taxischrono/services/mapservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -71,6 +73,8 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // les champ de recherche.
+
             SizedBox(
               height: 150,
               width: double.infinity,
@@ -82,6 +86,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: champsdeRecherche(
+                          iconData: Icons.person_pin,
                           onTap: () {
                             setState(() {
                               isDepart = true;
@@ -101,6 +106,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: champsdeRecherche(
+                        iconData: Icons.local_taxi,
                         onTap: () {
                           setState(() {
                             isDepart = false;
@@ -122,6 +128,8 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                 ),
               ),
             ),
+            //  la liste des résultas.
+
             Expanded(
               child: Card(
                 shape: shapeBorder,
@@ -191,11 +199,15 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                 ),
               ),
             ),
+            // on affiche le boutton de validation si et seulement si les deux point sont non vide.
             find
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: boutonText(
-                        context: context, action: () {}, text: "Vailider"),
+                      context: context,
+                      action: () => createRouteModel(),
+                      text: "Vailider",
+                    ),
                   )
                 : const SizedBox.shrink()
           ],
@@ -204,6 +216,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     );
   }
 
+// fonction permettant d'afficher les resultats de la map
   Widget placeDisplay({required Place place, required void Function() ontap}) {
     return ListTile(
       leading: const Icon(Icons.location_on_rounded),
@@ -216,6 +229,8 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
       ),
     );
   }
+
+// permet de modifier les places des point de départ et d'arrivé en fonction du lieu selectionner
 
   setController(Place place) {
     FocusScope.of(context).unfocus();
@@ -238,6 +253,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     }
   }
 
+// function de la map autocomplete elle permet le recherche automatique.
   findPlace(
     String valeur,
   ) {
@@ -249,6 +265,39 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
       debugPrint('erreur: $e');
     }
   }
+
+  // fonction permettant de creer la route à envoyé dans la page suivante
+
+  createRouteModel() async {
+    try {
+      dialogueDechargement(context);
+      final start =
+          await GooGleMapServices.checkDetailFromPlace(startPlace!.placeId);
+      final end =
+          await GooGleMapServices.checkDetailFromPlace(endPlace!.placeId);
+      await GooGleMapServices()
+          .getRoute(
+        start: (start as Adresse).adresseposition,
+        end: (end as Adresse).adresseposition,
+      )
+          .then((value) {
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          PageTransition(
+              child: MapReservation(
+                routeModel: value!,
+                adresseend: end,
+                adressestart: start,
+              ),
+              type: PageTransitionType.fade),
+        );
+      });
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
+
+  // fin de la classe principales
 }
 
 final shapeBorder =
@@ -257,3 +306,26 @@ Widget buildDivider() => const Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: Divider(),
     );
+
+// fonction permettant d'afficher la boite de dialogue de chargement
+
+dialogueDechargement(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          contentPadding: const EdgeInsets.all(15),
+          children: [
+            Center(
+              child: SizedBox(
+                height: 60,
+                width: 60,
+                child: CircularProgressIndicator(
+                  color: vert,
+                ),
+              ),
+            )
+          ],
+        );
+      });
+}

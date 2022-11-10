@@ -5,34 +5,38 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'package:page_transition/page_transition.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:taxischrono/screens/etineraires.dart';
+
 import 'package:taxischrono/services/mapservice.dart';
 
 import 'package:taxischrono/varibles/variables.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MapReservation extends StatefulWidget {
+  final Adresse adressestart, adresseend;
+  final RouteModel routeModel;
+  const MapReservation({
+    super.key,
+    required this.adressestart,
+    required this.adresseend,
+    required this.routeModel,
+  });
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MapReservation> createState() => _MapReservationState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MapReservationState extends State<MapReservation> {
   ///////////////////
-  ///les variables
+  // les variables
   ///////////////.
-  Completer controllerMap = Completer<GoogleMapController>();
-  ScrollController controllerSlide = ScrollController();
-  // TextEditingController controllerdest = TextEditingController();
-  // String destination = '';
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  bool voirs = false;
 
-  ///////////////////
-  ///les fonctions
-  ///////////////.
+  Completer controllerMap = Completer<GoogleMapController>();
+
+  String destination = '';
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool voirs = false;
+  Set<Polyline> polulinesSets = {};
+  Set<Marker> markersSets = {};
   @override
   void initState() {
     GooGleMapServices.requestLocation();
@@ -42,20 +46,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      drawer: SafeArea(
-        child: Container(
-          color: vert,
-          margin: EdgeInsets.only(right: taille(context).width * 0.2),
-        ),
-      ),
+      // key: scaffoldKey,
       body: SafeArea(
         child: Stack(
           children: [
             SlidingUpPanel(
                 parallaxEnabled: true,
                 minHeight: taille(context).height * 0.17,
-                maxHeight: taille(context).height * 0.35,
+                maxHeight: taille(context).height * 0.30,
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(20)),
@@ -83,12 +81,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         boutonText(
                             context: context,
-                            text: 'Ou Allons nous',
-                            action: () {
-                              Navigator.of(context).push(PageTransition(
-                                  child: const SearchDestinaitionPage(),
-                                  type: PageTransitionType.bottomToTop));
-                            })
+                            text: 'Valider la commande',
+                            action: () {})
                       ],
                     ),
                   );
@@ -103,12 +97,12 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {
-                        scaffoldKey.currentState!.openDrawer();
-                      },
-                      child: const FaIcon(
-                        Icons.menu,
-                        size: 30,
+                      onTap: () {},
+                      child: const CircleAvatar(
+                        child: FaIcon(
+                          Icons.close,
+                          size: 30,
+                        ),
                       ),
                     )
                   ],
@@ -120,4 +114,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+  ///////////////////
+  ///les fonctions
+  ///////////////.
+
+  // fin de la fontion principale
 }

@@ -34,6 +34,7 @@ class GooGleMapServices {
   // request User routes.
   Future<RouteModel?> getRoute(
       {required LatLng start, required LatLng end}) async {
+    // requette vers API de direction de google Map
     String url =
         "https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&key=$mapApiKey";
     final response = await http.get(Uri.parse(url));
@@ -59,6 +60,7 @@ class GooGleMapServices {
 
   static Future chekPlaceAutoComplette(
       String placeName, String sessionToken) async {
+    // requette vers l'API d'autocomplette de google map
     final url =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&language=fr&key=$mapApiKey&components=country:CM";
     var listPrediction = [];
@@ -108,8 +110,10 @@ class GooGleMapServices {
           var adresse = Adresse(
             adresseCode: placeid,
             adresseName: predictions['name'],
-            adresseposition: LatLng(predictions['geometry']['location']['lat'],
-                predictions['geometry']['location']['lng']),
+            adresseposition: LatLng(
+              predictions['geometry']['location']['lat'],
+              predictions['geometry']['location']['lng'],
+            ),
           );
           return adresse;
         }
