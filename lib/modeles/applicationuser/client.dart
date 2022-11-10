@@ -1,4 +1,3 @@
-// import 'package:taxischrono/modeles/applicationuser/chauffeur.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taxischrono/modeles/applicationuser/appliactionuser.dart';
 import 'package:taxischrono/modeles/applicationuser/chauffeur.dart';
@@ -7,9 +6,6 @@ import 'package:taxischrono/modeles/autres/forfetclient.dart';
 import 'package:taxischrono/modeles/autres/package.dart';
 import 'package:taxischrono/modeles/autres/reservation.dart';
 import 'package:taxischrono/modeles/autres/transaction.dart';
-// import 'package:taxischrono/modeles/autres/transaction.dart';
-// import 'package:taxischrono/modeles/discutions/conversation.dart';
-// import 'package:taxischrono/modeles/discutions/conversation.dart';
 import 'package:taxischrono/modeles/discutions/message.dart';
 import 'package:taxischrono/varibles/variables.dart';
 

@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:taxischrono/firebase_options.dart';
 import 'package:taxischrono/screens/homepage.dart';
 
-import 'package:taxischrono/screens/welcome_page.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

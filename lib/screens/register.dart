@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:taxischrono/screens/delayed_animation.dart';
-import 'package:taxischrono/main.dart';
+
 import 'package:taxischrono/screens/login_page.dart';
 import 'package:taxischrono/varibles/variables.dart';
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -33,6 +34,7 @@ class GooGleMapServices {
   // request User routes.
   Future<RouteModel?> getRoute(
       {required LatLng start, required LatLng end}) async {
+    // requette vers API de direction de google Map
     String url =
         "https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&key=$mapApiKey";
     final response = await http.get(Uri.parse(url));
@@ -58,6 +60,7 @@ class GooGleMapServices {
 
   static Future chekPlaceAutoComplette(
       String placeName, String sessionToken) async {
+    // requette vers l'API d'autocomplette de google map
     final url =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&language=fr&key=$mapApiKey&components=country:CM";
     var listPrediction = [];
@@ -66,14 +69,16 @@ class GooGleMapServices {
       if (value.statusCode == 200) {
         final res = jsonDecode(value.body);
         print(res);
-        // if (res['status'] == 'OK') {
-        final predictions = res['predictions'];
+        if (res['status'] == 'OK') {
+          final predictions = res['predictions'];
 
-        listPrediction = (predictions as List)
-            .map((place) => Place.fromJson(place))
-            .toList();
-        return listPrediction;
-        // }
+          listPrediction = (predictions as List)
+              .map((place) => Place.fromJson(place))
+              .toList();
+          return listPrediction;
+        } else {
+          return 'echec';
+        }
       } else {
         return 'echec';
       }
@@ -89,15 +94,6 @@ class GooGleMapServices {
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
       return body['results'][0]["formatted_address"];
-      // final adresse = Adresse(
-      //   adresseCode: body['results'][0]["address_components"][0]['long_name'],
-      //   adresseposition: position,
-      //   adresseCompletteCode: body['results'][0]['formatted_address'],
-      //   adresseCountrieName: body['results'][6]['address_components']
-      //       ['long_name'],
-      //   adresseName: body['results'][0]['address_components'][5]['long_name'],
-      // );
-      // return adresse;
     } else {
       return "echec";
     }
@@ -112,12 +108,14 @@ class GooGleMapServices {
         final res = jsonDecode(value.body);
         if (res['status'] == "OK") {
           final predictions = res['result'];
-
+          print(res);
           var adresse = Adresse(
-            adresseCode: placeid,
+            adresseCode: predictions['place_id'],
             adresseName: predictions['name'],
-            adresseposition: LatLng(predictions['geometry']['location']['lat'],
-                predictions['geometry']['location']['lng']),
+            adresseposition: LatLng(
+              predictions['geometry']['location']['lat'],
+              predictions['geometry']['location']['lng'],
+            ),
           );
           return adresse;
         }
@@ -142,6 +140,14 @@ class RouteModel {
     required this.distance,
     required this.tempsNecessaire,
   });
+
+  Map<String, dynamic> toMap() => {
+        "Temps ": tempsNecessaire.toMap(),
+        "Distances : ": distance.toMap(),
+        "Depart ": nomDapart,
+        "Arrive": nomArrive,
+        "Point ": point,
+      };
 }
 
 class Distance {
@@ -150,6 +156,8 @@ class Distance {
   Distance({required this.text, required this.value});
   factory Distance.froMap(Map<String, dynamic> distance) =>
       Distance(text: distance['text'], value: distance['value']);
+  Map<String, dynamic> toMap() =>
+      {"Distance value": value, "Distance text": text};
 }
 
 class TempsNecessaire {
@@ -158,6 +166,11 @@ class TempsNecessaire {
   TempsNecessaire({required this.text, required this.value});
   factory TempsNecessaire.froMap(Map<String, dynamic> distance) =>
       TempsNecessaire(text: distance['text'], value: distance['value']);
+
+  Map<String, dynamic> toMap() => {
+        'Time value': value,
+        "Time Text": text,
+      };
 }
 
 class Adresse {
@@ -170,6 +183,15 @@ class Adresse {
     required this.adresseposition,
     required this.adresseName,
   });
+
+  Map<String, dynamic> toMap() => {
+        "Position": {
+          "latitude": adresseposition.latitude,
+          "longitude": adresseposition.longitude
+        },
+        "Code": adresseName,
+        'Nom': adresseName
+      };
 }
 
 class Place {
@@ -187,4 +209,10 @@ class Place {
         mainName: map['structured_formatting']['main_text'],
         secondaryName: map['structured_formatting']['secondary_text'],
       );
+
+  Map<String, dynamic> toMap() => {
+        "PlaceId": placeId,
+        "Primary Name": mainName,
+        "Secondary name ": secondaryName,
+      };
 }

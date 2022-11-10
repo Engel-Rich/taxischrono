@@ -46,16 +46,18 @@ Widget boutonText(
         ),
         child: Text(
           text,
-          style: police,
+          style: police.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
     );
-TextFormField champsdeRecherche({
-  required void Function(String value)? changement,
-  required String hintext,
-  TextEditingController? controller,
-}) =>
+TextFormField champsdeRecherche(
+        {required void Function(String value)? changement,
+        required String hintext,
+        void Function()? onTap,
+        TextEditingController? controller,
+        IconData? iconData}) =>
     TextFormField(
+      onTap: onTap,
       controller: controller,
       style: police,
       onChanged: changement,
@@ -68,8 +70,8 @@ TextFormField champsdeRecherche({
           borderSide: BorderSide(color: blanc),
           borderRadius: BorderRadius.circular(15),
         ),
-        icon: const FaIcon(
-          Icons.location_on_outlined,
+        icon: FaIcon(
+          iconData ?? Icons.location_on_outlined,
           size: 30,
         ),
         fillColor: Colors.grey.shade200.withOpacity(0.7),

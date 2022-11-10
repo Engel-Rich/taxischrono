@@ -6,7 +6,7 @@ import 'package:taxischrono/services/firebaseauthservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
 import 'package:taxischrono/screens/delayed_animation.dart';
-import 'package:taxischrono/main.dart';
+
 import 'package:taxischrono/screens/login_page.dart';
 
 class SocialPage extends StatelessWidget {
@@ -35,9 +35,6 @@ class SocialPage extends StatelessWidget {
           children: [
             DelayedAnimation(
               delay: 1500,
-// <<<<<<<< HEAD:lib/intefaces/social_page.dart
-//               child: Image.asset('images/illustration1.jpg'),
-// ========
               child: SizedBox(
                 height: 280,
                 child: Image.asset('images/illustration1.jpg'),

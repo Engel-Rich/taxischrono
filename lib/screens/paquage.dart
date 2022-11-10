@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taxischrono/constants.dart';
-import 'package:taxischrono/varibles/variables.dart';
 
 import 'package:taxischrono/screens/sidebar.dart';
 
@@ -81,20 +80,6 @@ class Pack extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              // SizedBox(
-              //   height: 245,
-              //   width: MediaQuery.of(context).size.width,
-              //   child: ListView(
-              //     scrollDirection: Axis.horizontal,
-              //     children: [
-              //       packDetail("Pack1", 1000, 4.5, 'illustration1.jpg'),
-              //       packDetail("Pack2", 2000, 4.5, 'illustration2.jpg'),
-              //       packDetail("Pack3", 3000, 4.5, 'illustration3.png'),
-              //       packDetail("Pack4", 4000, 4.5, 'illustration4.JPG'),
-              //       packDetail("Pack5", 5000, 4.5, 'illustration2.jpg'),
-              //     ],
-              //   ),
-              // ),
               const Padding(
                 padding: EdgeInsets.only(top: 30, bottom: 20),
                 child: Text(

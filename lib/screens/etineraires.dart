@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:taxischrono/screens/mapreservation.dart';
 import 'package:taxischrono/services/mapservice.dart';
 import 'package:taxischrono/varibles/variables.dart';
 
@@ -14,12 +16,24 @@ class SearchDestinaitionPage extends StatefulWidget {
 
 class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
   Future? places;
-  Place? startPlace;
+
+  // //////////////////////////
+  // les controlleurs de champs de saisie;
+  /////////////
   TextEditingController controllerstart = TextEditingController();
   TextEditingController controllersend = TextEditingController();
-  Place? endPlace;
-  bool find = false;
 
+  // /// les variables qui seront envoyer pour mes positions de départ et d'arriver
+  Place? endPlace;
+  Place? startPlace;
+
+  bool isDepart =
+      true; //permet de vérifier que le foccus est sur le champs de départ
+
+  bool find =
+      false; //permet de vérifier que la recherche est terminer afin d'affiche le bouton de validation
+
+  bool vide = true; //permet de vérifier que le champs de saisie n'est pas vide
   //
   @override
   Widget build(BuildContext context) {
@@ -61,6 +75,8 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // les champ de recherche.
+
             SizedBox(
               height: 150,
               width: double.infinity,
@@ -72,18 +88,41 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: champsdeRecherche(
+                          iconData: Icons.person_pin,
+                          onTap: () {
+                            setState(() {
+                              isDepart = true;
+                              find = false;
+                            });
+                          },
                           controller: controllerstart,
                           changement: (value) {
+                            setState(() {
+                              vide = value.trim().isEmpty;
+                            });
                             findPlace(value);
-                            setState(() {});
+                            find = false;
                           },
                           hintext: "Point de départ"),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: champsdeRecherche(
+                        iconData: Icons.local_taxi,
+                        onTap: () {
+                          setState(() {
+                            isDepart = false;
+                            find = false;
+                          });
+                        },
                         controller: controllersend,
-                        changement: (value) {},
+                        changement: (value) {
+                          setState(() {
+                            vide = value.trim().isEmpty;
+                            find = false;
+                          });
+                          findPlace(value);
+                        },
                         hintext: "Ou allons nous ?",
                       ),
                     )
@@ -91,12 +130,14 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                 ),
               ),
             ),
+            //  la liste des résultas.
+
             Expanded(
               child: Card(
                 shape: shapeBorder,
                 child: Container(
                   padding: const EdgeInsets.all(12),
-                  child: places == null
+                  child: places == null || vide
                       ? Center(
                           child: Text(
                           "Recherchez un endroit",
@@ -118,12 +159,14 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                                   snapshot.hasData &&
                                   snapshot.data!.isNotEmpty)) {
                                 return ListView.separated(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
                                     final place = snapshot.data!;
                                     return placeDisplay(
                                       place: place[index],
-                                      ontap: () {},
+                                      ontap: () => setController(place[index]),
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -139,7 +182,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                                       letterSpacing: 3,
                                       wordSpacing: 2),
                                 ));
-                              } else if (snapshot.data!.isEmpty) {
+                              } else if (snapshot.data!.isEmpty && !vide) {
                                 return Center(
                                     child: Text(
                                   'Aucun androit ne coerespond a votre recherche ',
@@ -158,11 +201,15 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
                 ),
               ),
             ),
+            // on affiche le boutton de validation si et seulement si les deux point sont non vide.
             find
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: boutonText(
-                        context: context, action: () {}, text: "Vailider"),
+                      context: context,
+                      action: () => createRouteModel(),
+                      text: "Vailider",
+                    ),
                   )
                 : const SizedBox.shrink()
           ],
@@ -171,6 +218,7 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     );
   }
 
+// fonction permettant d'afficher les resultats de la map
   Widget placeDisplay({required Place place, required void Function() ontap}) {
     return ListTile(
       leading: const Icon(Icons.location_on_rounded),
@@ -184,11 +232,30 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     );
   }
 
-  setController(
-    TextEditingController constroller,
-    Place placeClick,
-    Place placeChange,
-  ) {}
+// permet de modifier les places des point de départ et d'arrivé en fonction du lieu selectionner
+
+  setController(Place place) {
+    FocusScope.of(context).unfocus();
+    if (isDepart) {
+      setState(() {
+        startPlace = place;
+        controllerstart.text = place.mainName;
+        find =
+            (controllerstart.text.isNotEmpty && controllersend.text.isNotEmpty);
+        places = null;
+      });
+    } else {
+      setState(() {
+        endPlace = place;
+        controllersend.text = place.mainName;
+        find =
+            (controllerstart.text.isNotEmpty && controllersend.text.isNotEmpty);
+        places = null;
+      });
+    }
+  }
+
+// function de la map autocomplete elle permet le recherche automatique.
   findPlace(
     String valeur,
   ) {
@@ -199,20 +266,46 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
     } catch (e) {
       debugPrint('erreur: $e');
     }
-
-    //     .then((value) {
-    //   if (value != null) {
-    //     find = true;
-    //   } else {
-    //     setState(() {
-    //       places = value as List<Place>;
-    //     });
-    //   }
-    // });
-    // setState(() {
-    //   find = false;
-    // });
   }
+
+  // fonction permettant de creer la route à envoyé dans la page suivante
+
+  createRouteModel() async {
+    try {
+      dialogueDechargement(context);
+      print(startPlace!.toMap());
+      print(endPlace!.toMap());
+      final start =
+          await GooGleMapServices.checkDetailFromPlace(startPlace!.placeId);
+      print(start.toMap());
+      final end =
+          await GooGleMapServices.checkDetailFromPlace(endPlace!.placeId);
+      print(end.toMap());
+      // await GooGleMapServices()
+      //     .getRoute(
+      //   start: (start as Adresse).adresseposition,
+      //   end: (end as Adresse).adresseposition,
+      // )
+      //     .then((value) {
+      //   print(value!.toMap());
+      //   Navigator.of(context).pop();
+      //   Navigator.of(context).push(
+      //     PageTransition(
+      //         child: MapReservation(
+      //           routeModel: value,
+      //           adresseend: end,
+      //           adressestart: start,
+      //         ),
+      //         type: PageTransitionType.fade),
+      //   );
+      // });
+
+    } catch (e) {
+      debugPrint('Error : $e');
+    }
+  }
+
+  // fin de la classe principales
 }
 
 final shapeBorder =
@@ -221,3 +314,27 @@ Widget buildDivider() => const Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: Divider(),
     );
+
+// fonction permettant d'afficher la boite de dialogue de chargement
+
+dialogueDechargement(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return SimpleDialog(
+          contentPadding: const EdgeInsets.all(15),
+          children: [
+            Center(
+              child: SizedBox(
+                height: 60,
+                width: 60,
+                child: CircularProgressIndicator(
+                  color: vert,
+                ),
+              ),
+            )
+          ],
+        );
+      });
+}
