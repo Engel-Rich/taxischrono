@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:taxischrono/constants.dart';
 
+import 'package:taxischrono/screens/sidebar.dart';
+
 class Pack extends StatelessWidget {
   const Pack({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SideBar(),
       body: Padding(
         padding: const EdgeInsets.only(right: 10, left: 10, bottom: 0),
         child: GestureDetector(

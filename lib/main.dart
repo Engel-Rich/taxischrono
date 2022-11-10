@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:taxischrono/screens/welcome_page.dart';
 
+// ignore: constant_identifier_names
 const d_red = Color.fromARGB(248, 255, 233, 33);
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

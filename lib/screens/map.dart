@@ -6,6 +6,7 @@ import 'package:location/location.dart' as loc;
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:taxischrono/screens/paquage.dart';
+import 'package:taxischrono/screens/sidebar.dart';
 import 'dart:math' show cos, sqrt, asin;
 
 class NavigationScreen extends StatefulWidget {
@@ -45,6 +46,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const SideBar(),
       body: sourcePosition == null
           ? const Center(child: CircularProgressIndicator())
           : Stack(
