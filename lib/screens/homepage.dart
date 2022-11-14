@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:taxischrono/screens/etineraires.dart';
+import 'package:taxischrono/screens/sidebar.dart';
 import 'package:taxischrono/services/mapservice.dart';
 
 import 'package:taxischrono/varibles/variables.dart';
@@ -43,12 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      drawer: SafeArea(
-        child: Container(
-          color: vert,
-          margin: EdgeInsets.only(right: taille(context).width * 0.2),
-        ),
-      ),
+      drawer: const SafeArea(child: SideBar()),
       body: SafeArea(
         child: Stack(
           children: [

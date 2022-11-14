@@ -49,6 +49,7 @@ class _MapReservationState extends State<MapReservation> {
     getLines();
     markermecker();
     // GooGleMapServices.requestLocation();
+    setState(() {});
     super.initState();
   }
 
@@ -69,8 +70,10 @@ class _MapReservationState extends State<MapReservation> {
                 body: GoogleMap(
                   initialCameraPosition: CameraPosition(
                     target: widget.adressestart.adresseposition,
-                    zoom: 14,
+                    zoom: 12,
                   ),
+                  myLocationButtonEnabled: true,
+                  mapType: MapType.normal,
                   onMapCreated: (controller) {
                     setState(() {
                       controllerMap.complete(controller);
@@ -163,7 +166,9 @@ class _MapReservationState extends State<MapReservation> {
         } else {
           debugPrint(value.errorMessage);
         }
-        addpolylinespoints(polylineCoordinates);
+        setState(() {
+          addpolylinespoints(polylineCoordinates);
+        });
       },
     );
   }
@@ -175,7 +180,7 @@ class _MapReservationState extends State<MapReservation> {
     Polyline polyline = Polyline(
       polylineId: id,
       points: listlatlng,
-      color: vert,
+      color: Colors.blueAccent.shade200,
       width: 5,
     );
     polylinesSets[id] = polyline;

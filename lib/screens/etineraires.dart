@@ -273,33 +273,62 @@ class _SearchDestinaitionPageState extends State<SearchDestinaitionPage> {
   createRouteModel() async {
     try {
       dialogueDechargement(context);
-      print(startPlace!.toMap());
-      print(endPlace!.toMap());
-      final start =
-          await GooGleMapServices.checkDetailFromPlace(startPlace!.placeId);
-      print(start.toMap());
-      final end =
-          await GooGleMapServices.checkDetailFromPlace(endPlace!.placeId);
-      print(end.toMap());
-      // await GooGleMapServices()
-      //     .getRoute(
-      //   start: (start as Adresse).adresseposition,
-      //   end: (end as Adresse).adresseposition,
-      // )
-      //     .then((value) {
-      //   print(value!.toMap());
-      //   Navigator.of(context).pop();
-      //   Navigator.of(context).push(
-      //     PageTransition(
-      //         child: MapReservation(
-      //           routeModel: value,
-      //           adresseend: end,
-      //           adressestart: start,
-      //         ),
-      //         type: PageTransitionType.fade),
-      //   );
-      // });
 
+      print("Start ${startPlace!.toMap()}");
+
+      Adresse? start;
+      Adresse? end;
+
+      // creation de la première adresse : adresse de départ
+
+      await GooGleMapServices.checkDetailFromPlace(startPlace!.placeId)
+          .then((value) {
+        if (value != null) {
+          print(value.toMap());
+          start = value;
+        } else {
+          showAboutDialog(
+            context: context,
+            children: [
+              const Text("Error le retour est null"),
+            ],
+          );
+        }
+      });
+      print("Start adresse ${start!.toMap()}");
+
+      // creation de la dernière adresse : adresse d'arrivé
+
+      print("ENd ${endPlace!.toMap()}");
+      await GooGleMapServices.checkDetailFromPlace(endPlace!.placeId)
+          .then((value) {
+        if (value != null) {
+          print(value.toMap());
+          end = value;
+        } else {}
+      });
+      print("End adresse ${end!.toMap()}");
+
+      // création de la route service.
+
+      await GooGleMapServices()
+          .getRoute(
+        start: (start as Adresse).adresseposition,
+        end: (end as Adresse).adresseposition,
+      )
+          .then((value) {
+        print(value!.toMap());
+        Navigator.of(context).pop();
+        Navigator.of(context).push(
+          PageTransition(
+              child: MapReservation(
+                routeModel: value,
+                adresseend: end!,
+                adressestart: start!,
+              ),
+              type: PageTransitionType.fade),
+        );
+      });
     } catch (e) {
       debugPrint('Error : $e');
     }

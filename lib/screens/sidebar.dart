@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:taxischrono/services/firebaseauthservice.dart';
+import 'package:taxischrono/varibles/variables.dart';
 
-class SideBar extends StatelessWidget {
+class SideBar extends StatefulWidget {
   const SideBar({super.key});
 
+  @override
+  State<SideBar> createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -11,25 +18,26 @@ class SideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('Nom du compte'),
+            accountName: const Text("Mom compte"),
             accountEmail: const Text('email@gmail.com'),
             currentAccountPicture: CircleAvatar(
+              radius: 70,
               child: ClipOval(
                 child: Image.network(
-                  'https://fr.depositphotos.com/stock-photos/taxi.html',
+                  'https://png.pngtree.com/png-clipart/20190924/original/pngtree-business-people-avatar-icon-user-profile-free-vector-png-image_4815126.jpg',
                   fit: BoxFit.cover,
-                  width: 90,
+                  width: double.infinity,
                   height: 90,
                 ),
               ),
             ),
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                      'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')),
-            ),
+            // decoration: const BoxDecoration(
+            //   color: Colors.blue,
+            //   image: DecorationImage(
+            //       fit: BoxFit.fill,
+            //       image: NetworkImage(
+            //           'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')),
+            // ),
           ),
           ListTile(
             leading: const Icon(Icons.favorite),
@@ -71,7 +79,7 @@ class SideBar extends StatelessWidget {
             title: const Text('Deconexion'),
             leading: const Icon(Icons.exit_to_app),
             // ignore: avoid_returning_null_for_void
-            onTap: () => null,
+            onTap: () async => Authservices().logOut(),
           ),
         ],
       ),

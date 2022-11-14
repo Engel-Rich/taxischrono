@@ -100,30 +100,29 @@ class GooGleMapServices {
   }
 
 // fonction d'obtention des informations d'otentification à partir d'une place.
-  static checkDetailFromPlace(String placeid) async {
+  static Future<Adresse> checkDetailFromPlace(String placeid) async {
+    Adresse? adresseRetour;
     final url =
         "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeid&key=$mapApiKey";
     await http.get(Uri.parse(url)).then((value) {
       if (value.statusCode == 200) {
         final res = jsonDecode(value.body);
-        if (res['status'] == "OK") {
-          final predictions = res['result'];
-          print(res);
-          var adresse = Adresse(
-            adresseCode: predictions['place_id'],
-            adresseName: predictions['name'],
-            adresseposition: LatLng(
-              predictions['geometry']['location']['lat'],
-              predictions['geometry']['location']['lng'],
-            ),
-          );
-          return adresse;
-        }
-      } else {
-        return 'echec';
+        final predictions = res['result'];
+        adresseRetour = Adresse(
+          adresseCode: predictions['place_id'],
+          adresseName: predictions['name'],
+          adresseposition: LatLng(
+            predictions['geometry']['location']['lat'],
+            predictions['geometry']['location']['lng'],
+          ),
+        );
+        print("Adresse : ");
+        print(adresseRetour!.toMap());
       }
     });
+    return adresseRetour!;
   }
+
 // fin de la classe des services Maps.
 }
 
@@ -189,7 +188,7 @@ class Adresse {
           "latitude": adresseposition.latitude,
           "longitude": adresseposition.longitude
         },
-        "Code": adresseName,
+        "Code": adresseCode,
         'Nom': adresseName
       };
 }
