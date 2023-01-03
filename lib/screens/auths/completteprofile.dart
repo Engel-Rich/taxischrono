@@ -132,16 +132,15 @@ class _CompletteProfileState extends State<CompletteProfile> {
                                 ),
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    setState(() {
-                                      loader = true;
-                                    });
+                                    loader = true;
+                                    setState(() {});
                                     final applicationUser = ApplicationUser(
                                       userEmail:
                                           widget.applicationUser.userEmail,
                                       userName: widget.applicationUser.userName,
                                       userTelephone: controllerPhone.text,
                                     );
-                                    authentication.verifyPhoneNumber(
+                                    await authentication.verifyPhoneNumber(
                                         verificationCompleted:
                                             (credential) async {
                                           await authentication.currentUser!
@@ -150,9 +149,8 @@ class _CompletteProfileState extends State<CompletteProfile> {
                                           await applicationUser
                                               .saveUser()
                                               .then((value) {
-                                            setState(() {
-                                              loader = false;
-                                            });
+                                            loader = false;
+                                            setState(() {});
                                             Navigator.pushAndRemoveUntil(
                                                 context,
                                                 PageTransition(
@@ -163,9 +161,8 @@ class _CompletteProfileState extends State<CompletteProfile> {
                                           });
                                         },
                                         verificationFailed: (exception) {
-                                          setState(() {
-                                            loader = false;
-                                          });
+                                          loader = false;
+                                          setState(() {});
                                           getsnac(
                                               title: "Erreur de vérification",
                                               msg: exception.code);

@@ -112,34 +112,51 @@ class _OtpPageState extends State<OtpPage> {
                           delay: 3000,
                           child: boutonText(
                               context: context,
-                              action: () {
+                              action: () async {
                                 if (smsCode.length == 6) {
-                                  if (widget.isauthentication) {
-                                    showLoadiing(context);
-                                    ApplicationUser.validateOPT(context,
+                                  try {
+                                    loader = true;
+                                    setState(() {});
+                                    if (widget.isauthentication) {
+                                      await ApplicationUser.validateOPT(context,
+                                          smsCode: smsCode,
+                                          phone: widget.phone!,
+                                          verificationId:
+                                              widget.verificationId);
+
+                                      // loader = false;
+                                      // setState(() {});
+                                    } else {
+                                      // loader = true;
+                                      // setState(() {});
+                                      ApplicationUser chauffeur =
+                                          widget.utilisateur!;
+                                      await Client.validateOPT(
+                                        chauffeur,
+                                        context,
                                         smsCode: smsCode,
-                                        phone: widget.phone!,
-                                        verificationId: widget.verificationId);
-                                    setState(() {
-                                      loader = false;
-                                    });
-                                  } else {
-                                    showLoadiing(context);
-                                    ApplicationUser chauffeur =
-                                        widget.utilisateur!;
-                                    Client.validateOPT(
-                                      chauffeur,
-                                      context,
-                                      smsCode: smsCode,
-                                      verificationId: widget.verificationId,
-                                    );
+                                        verificationId: widget.verificationId,
+                                      );
+                                      // loader = false;
+                                      // setState(() {});
+                                    }
+                                    loader = false;
+                                    setState(() {});
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                        PageTransition(
+                                            child: const HomePage(),
+                                            type:
+                                                PageTransitionType.leftToRight),
+                                        (route) => false);
+                                  } catch (e) {
+                                    debugPrint(e.toString());
+                                    loader = false;
+                                    setState(() {});
+                                    toaster(
+                                        message: 'Erreur de vérification',
+                                        color: Colors.red);
                                   }
                                 }
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    PageTransition(
-                                        child: const HomePage(),
-                                        type: PageTransitionType.leftToRight),
-                                    (route) => false);
                               },
                               text: 'Valider'.toUpperCase())),
                       const SizedBox(height: 10),

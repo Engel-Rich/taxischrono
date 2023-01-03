@@ -77,12 +77,13 @@ class _LoginNumberState extends State<LoginNumber> {
                       delay: 2000,
                       child: boutonText(
                           context: context,
-                          action: () {
+                          action: () async {
                             if (numberSubmited != null &&
                                 numberSubmited!.phoneNumber!.trim().length ==
                                     13) {
-                              showLoadiing(context);
-                              ApplicationUser.authenticatePhonNumber(
+                              loader = true;
+                              setState(() {});
+                              await ApplicationUser.authenticatePhonNumber(
                                 phonNumber: numberSubmited!.phoneNumber!,
                                 onCodeSend: (verificationId, resendToken) {
                                   Navigator.of(context).push(PageTransition(
@@ -97,16 +98,29 @@ class _LoginNumberState extends State<LoginNumber> {
                                   await authentication
                                       .signInWithCredential(credential);
                                 },
-                                verificationFailed: (except) {},
+                                verificationFailed: (except) {
+                                  debugPrint(except.code);
+
+                                  getsnac(
+                                    msg:
+                                        "Une erreur est survenu l'or de la vérification veillez reéssayer ou utiliser une autre méthode",
+                                    title: "Erreur de vérification",
+                                    error: true,
+                                    duration: const Duration(seconds: 7),
+                                    icons: Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                    ),
+                                  );
+                                },
                                 global: globalkey,
                               );
-                              setState(() {
-                                loader = false;
-                              });
+
+                              loader = false;
+                              setState(() {});
                             } else {
-                              setState(() {
-                                loader = false;
-                              });
+                              loader = false;
+                              setState(() {});
                               Fluttertoast.showToast(
                                 msg: "Entrez un numéro de téléphone correcte",
                                 toastLength: Toast.LENGTH_LONG,

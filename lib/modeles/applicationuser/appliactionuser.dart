@@ -213,7 +213,7 @@ class ApplicationUser {
     transaction.noterChauffeur(note);
   }
 
-  static authenticatePhonNumber(
+  static Future authenticatePhonNumber(
       {required String phonNumber,
       required void Function(String, int?) onCodeSend,
       required void Function(PhoneAuthCredential) verificationCompleted,
@@ -296,39 +296,55 @@ class ApplicationUser {
     });
   }
 
-  static loginNumber(
+  static Future loginNumber(
     ApplicationUser chauffeurOtp, {
     required BuildContext context,
     required Function(String verificationId, int? value1) onCodeSend,
   }) async {
-    await authentication.verifyPhoneNumber(
-      phoneNumber: chauffeurOtp.userTelephone,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await authentication
-            .signInWithCredential(credential)
-            .then((value) async {
-          if (value.user != null) {
-            await value.user!.updateEmail(chauffeurOtp.userEmail);
-            await value.user!.updateDisplayName(chauffeurOtp.userName);
-            await value.user!.updatePassword(chauffeurOtp.motDePasse!);
-            await chauffeurOtp.saveUser().then((val) async {
-              await Client(idUser: value.user!.uid, tickets: 0).register();
-              // ignore: use_build_context_synchronously
-              // Navigator.of(context).pushAndRemoveUntil(
-              //     PageTransition(
-              //         child: const HomePage(),
-              //         type: PageTransitionType.leftToRight),
-              //     (route) => false);
-            });
-          }
-        });
-      },
-      verificationFailed: (FirebaseAuthException except) {
-        debugPrint(except.code);
-      },
-      codeSent: onCodeSend,
-      codeAutoRetrievalTimeout: (phone) {},
-    );
+    try {
+      await authentication.verifyPhoneNumber(
+        phoneNumber: chauffeurOtp.userTelephone,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await authentication
+              .signInWithCredential(credential)
+              .then((value) async {
+            if (value.user != null) {
+              await value.user!.updateEmail(chauffeurOtp.userEmail);
+              await value.user!.updateDisplayName(chauffeurOtp.userName);
+              await value.user!.updatePassword(chauffeurOtp.motDePasse!);
+              await chauffeurOtp.saveUser().then((val) async {
+                await Client(idUser: value.user!.uid, tickets: 0)
+                    .register()
+                    .then((value) {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      PageTransition(
+                          child: const HomePage(),
+                          type: PageTransitionType.leftToRight),
+                      (route) => false);
+                });
+                // ignore: use_build_context_synchronously
+              });
+            }
+          });
+        },
+        verificationFailed: (FirebaseAuthException except) {
+          debugPrint(except.code);
+
+          toaster(
+              message: "Erreur d'enrégistrement Veillez réssayer",
+              color: Colors.red,
+              long: true);
+        },
+        codeSent: onCodeSend,
+        codeAutoRetrievalTimeout: (phone) {},
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      toaster(
+          message: "Erreur d'enrégistrement Veillez réssayer",
+          color: Colors.red,
+          long: true);
+    }
   }
 // fin de la classe
 

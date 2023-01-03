@@ -118,8 +118,10 @@ class _SignupPageState extends State<SignupPage> {
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 4),
                               ),
-                              onPressed: () {
-                                userRegister();
+                              onPressed: () async {
+                                await userRegister();
+                                loader = false;
+                                setState(() {});
                               }),
                         ),
                       ),
@@ -356,19 +358,17 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  userRegister() async {
+  Future userRegister() async {
     if (formKey.currentState!.validate() && numberSubmited != null) {
-      setState(() {
-        loader = true;
-      });
+      loader = true;
+      setState(() {});
       await ApplicationUser.userExist(
               userEmail: controllerEmail.text,
               userPhonNumber: numberSubmited!.phoneNumber)
           .then((value) async {
         if (value) {
-          setState(() {
-            loader = false;
-          });
+          loader = false;
+          setState(() {});
           setState(() {
             FocusScope.of(keyscafold.currentContext!).unfocus();
           });
@@ -439,9 +439,9 @@ class _SignupPageState extends State<SignupPage> {
               );
             },
           );
-          setState(() {
-            loader = false;
-          });
+
+          loader = false;
+          setState(() {});
         }
       });
     }

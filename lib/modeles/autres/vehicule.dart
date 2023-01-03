@@ -89,19 +89,31 @@ class Vehicule {
         .update({"statut": etatActuel});
   }
 
-  static Stream<Vehicule> vehiculeStrem(idchau) =>
+  static Stream<Vehicule?> vehiculeStrem(idchau) =>
       datatbase.ref("Vehicules").child(idchau).onValue.map((event) {
-        return Vehicule.froJson(event.snapshot.value);
+        try {
+          return Vehicule.froJson(event.snapshot.value);
+        } catch (e) {
+          return null;
+        }
       });
-  static Future<Vehicule> vehiculeFuture(idchau) =>
+  static Future<Vehicule?> vehiculeFuture(idchau) =>
       datatbase.ref("Vehicules").child(idchau).get().then((event) {
-        return Vehicule.froJson(event.value);
+        try {
+          return Vehicule.froJson(event.value);
+        } catch (e) {
+          null;
+        }
       });
 
-  static Future<List<Vehicule>> vehiculRequette() =>
+  static Future<List<Vehicule?>> vehiculRequette() =>
       datatbase.ref("Vehicules").get().then((event) {
         return event.children.map((vehi) {
-          return Vehicule.froJson(vehi.value);
+          try {
+            return Vehicule.froJson(vehi.value);
+          } catch (e) {
+            return null;
+          }
         }).toList();
       });
   // fin de la classe

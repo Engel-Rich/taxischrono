@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -88,6 +89,7 @@ class _SideBarState extends State<SideBar> {
                   leading: const FaIcon(Icons.person_pin),
                   title: Text('Connexion', style: police),
                   onTap: () {
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(PageTransition(
                       child: const LoginPage(),
                       type: PageTransitionType.fade,
@@ -159,15 +161,13 @@ class _SideBarState extends State<SideBar> {
               }),
 
           // isConnected
-          // ? ListTile(
-          //     title: Text('Déconexion', style: police),
-          //     leading: const Icon(Icons.exit_to_app),
-          //     // ignore: avoid_returning_null_for_void
-          //     onTap: () async => isConnected
-          //         ? Authservices().logOut().then((value) {
-          //             Navigator.of(context).pop();
-          //             // setState(() {});
-          //           })
+          ListTile(
+              title: Text('Contacter nous', style: police),
+              leading: const Icon(Icons.call),
+              // ignore: avoid_returning_null_for_void
+              onTap: () async {
+                await FlutterPhoneDirectCaller.callNumber("+237658549711");
+              }),
           //         : getsnac(
           //             title: "DÉCONNEXION", msg: "Aucun compte connecté"),
           //   )

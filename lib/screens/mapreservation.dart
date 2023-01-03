@@ -382,11 +382,13 @@ class _MapReservationState extends State<MapReservation> {
       } else {
         Vehicule.vehiculRequette().then((valu) async {
           for (var vehi in valu) {
-            if (vehi.statut &&
+            if (vehi != null &&
+                vehi.statut &&
                 calculateDistance(
                         widget.reservation.pointDepart.adresseposition,
                         vehi.position!) <
-                    25) {
+                    20) {
+              debugPrint(vehi.toMap().toString());
               await sendNotification(
                 vehi.token,
                 "${widget.reservation.pointArrive.adresseName} ${widget.reservation.prixReservation}",
@@ -399,7 +401,6 @@ class _MapReservationState extends State<MapReservation> {
               var ent = await Reservation.sendToChauffeur(
                   vehi.chauffeurId, widget.reservation.idReservation);
               if (ent != 0) break;
-
               await Future.delayed(const Duration(seconds: 9));
               await Reservation.suprimeraRservationChezUnChaufeur(
                   vehi.chauffeurId, widget.reservation);
@@ -445,6 +446,7 @@ class _MapReservationState extends State<MapReservation> {
               setState(() {
                 loader = false;
               });
+              await Client.utiliserUnTicket(authentication.currentUser!.uid);
               Navigator.pushAndRemoveUntil(
                   context,
                   PageTransition(

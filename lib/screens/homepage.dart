@@ -272,13 +272,16 @@ class _HomePageState extends State<HomePage> {
             boutonText(
                 context: context,
                 action: () async {
-                  await GooGleMapServices.handleLocationPermission()
-                      .then((value) async {
-                    if (!value) {
-                      Navigator.of(context).pop();
-                      await Geolocator.openLocationSettings();
-                    }
-                  });
+                  Navigator.of(context).pop();
+                  await Geolocator.openLocationSettings();
+                  // .then((value) {
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     PageTransition(
+                  //         child: const HomePage(),
+                  //         type: PageTransitionType.fade),
+                  //     (route) => false);
+                  // });
+                  fromCurrentPosition();
                 },
                 text: "Activer ma localisation"),
             spacerHeight(15),
@@ -327,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                     markerId: const MarkerId("monChauffeur"),
                     infoWindow: const InfoWindow(
                         title: "Position actuelle du chauffeur"),
-                    position: vale.position!,
+                    position: vale!.position!,
                     icon: BitmapDescriptor.fromBytes(bitechau),
                   ),
                   Marker(

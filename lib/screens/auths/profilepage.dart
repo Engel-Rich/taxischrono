@@ -52,9 +52,15 @@ class ProfileScreen extends StatelessWidget {
                               msg: "Vous ètes déconneté avec succès");
                         });
                       },
-                      child: const Icon(
-                        Icons.logout,
-                        color: Colors.white,
+                      child: InkWell(
+                        onTap: () async {
+                          Navigator.pop(context);
+                          await Authservices().logOut();
+                        },
+                        child: const Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

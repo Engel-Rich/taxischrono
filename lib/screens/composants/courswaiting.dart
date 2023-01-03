@@ -136,8 +136,6 @@ class _MapWaitingState extends State<MapWaiting> {
                               context: context,
                               couleur: Colors.green.shade300,
                               action: () async {
-                                await Client.utiliserUnTicket(
-                                    authentication.currentUser!.uid);
                                 await widget.transactionApp.modifierEtat(1);
                               },
                               text: 'Démarer')

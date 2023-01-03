@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -210,7 +211,7 @@ addpolylinespoints(List<LatLng> listlatlng, polylinesSets) async {
 
 // const privateKeyPaiemant =
 //     "SK_9WuGed9lATAm1QAxexUk1gYQ3X5H2z1GUk5MAR8S7S1v8tUZ2HAFab9H3qAd";
-const publickeyPaiment = "b.W0h22esh35vut5Ov";
+const publickeyPaiment = "b.S3PM3xdiXFRIT8l6";
 
 const pathUrl = "https://api.notchpay.co/payments/initialize";
 String urlCapturation(String reference) =>
@@ -266,3 +267,10 @@ showLoadiing(context) {
         );
       });
 }
+
+toaster({required String message, Color? color, bool? long}) =>
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength:
+            long != null && long ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT,
+        backgroundColor: color ?? Colors.grey.shade900.withOpacity(0.8));
