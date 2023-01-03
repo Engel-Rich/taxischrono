@@ -9,6 +9,7 @@
         android:label="taxischrono"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        android:extractNativeLibs=false
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDRiuLYKs1ymgiW97p3ybAuQLOQcBDqUvg"/>
         <activity
